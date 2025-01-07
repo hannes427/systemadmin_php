@@ -1,0 +1,30 @@
+
+<module>
+  <rawname>systemadmin</rawname>
+  <name>Systemadmin</name>
+  <version>17.0.1</version>
+  <publisher>Generated Module</publisher>
+  <license>AGPLv3</license>
+  <changelog>*17.0.1* Initial release</changelog>
+  <category>Admin</category>
+  <description>OSS SystemAdmin</description>
+  <menuitems>
+    <systemadmin>Systemadmin</systemadmin>
+  </menuitems>
+  <supported>17.0</supported>
+  <database>
+    <table name="systemadmin_settings">
+      <field name="key" type="string" length="30"/>
+      <field name="value" type="text"/>
+      <key name="key" type="unique">
+        <column name="key"/>
+      </key>
+    </table>
+    <table name="systemadmin_logs">
+      <field name="id" type="integer" unsigned="true" primarykey="true" autoincrement="true"/>
+      <field name="username" type="string" length="50"/>
+      <field name="module" type="string" length="30"/>
+      <field name="timestamp" type="integer" unsigned="true"/>
+    </table>
+  </database>
+</module>
