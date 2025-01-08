@@ -15,21 +15,22 @@ if(isset($_POST['set_email']) && $_POST['set_email'] == "true") {
     $password = trim($_POST['password']);
     $password_changed = $_POST['password_changed'];
     $smtp_use_tls = $_POST['smtp_use_tls'];
-    if ($smtp_use_tls == "no") {
+    if ($smtp_sasl_auth_enable == "no") {
         $username = "";
     }
     $port = trim($_POST['port']);
     //Vallidation
     $error = false;
+     if ($smtp_use_tls == "yes" && ($port == "" || !preg_match("/^\d+$/", $port))) {
+        $error = true;
+    }
     if ($setup == "remote") {
-        if ($smtp_use_tls == "yes" && ($port == "" || !is_numeric($port))) {
+        if ($smtp_sasl_auth_enable == "yes" && ($username == "" || $password == "")) {
             $error = true;
         }
-        else if ($smtp_sasl_auth_enable == "yes" && ($username == "" || $password == "")) {
+        else if ($relayhost == ""  || (!preg_match("/^[a-z0-9]+[a-z0-9-\._]+\.[a-z]{2,}$/", $relayhost) && !filter_var($relayhost, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && !filter_var($relayhost, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
             $error = true;
-        }
-        else if ($relayhost == ""  || !preg_match("/^[a-z0-9]+[a-z0-9-\._]+.[a-z]{2,}$/", $relayhost)) {
-            $error = true;
+            echo "<br><br>nein...<br><br>";
         }
     }
     if(!$error) {

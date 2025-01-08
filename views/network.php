@@ -1,6 +1,8 @@
 <?php
 if(isset($_POST['set_network']) && $_POST['set_network'] == "true") {
   echo "Form submitted!<br><br>";
+  print_r($_POST);
+  echo "<br><br>";
 }
 $interfaces = FreePBX::Systemadmin()->getInterfaces();
 foreach($interfaces AS $interface) {
@@ -22,7 +24,7 @@ foreach($interfaces AS $interface) {
     }
     $interfaces[$interface['name']] = $interface;
 }
-arsort($interfaces);
+ksort($interfaces);
 print_r($interfaces);
 echo "<script>\n";
 $i = 1;
