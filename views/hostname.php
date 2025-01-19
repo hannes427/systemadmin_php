@@ -42,28 +42,36 @@ if(isset($_POST['set_hostname']) && $_POST['set_hostname'] == "true") {
 <div class = "display full-border">
 <div class="row">
 			<div class="col-sm-9">
-				<div class="fpbx-container">
-										<div class="display full-border">
-						<div class='container-fluid'>
 						<?php if ($err_hostname || $err_domainname) { echo "Error! Could not save changes: Invalid entries!<br>"; } ?>
                       <form method="post" class="fpbx-submit" id="hostform">
-  <div class='row'>
-  <div class='col-sm-offset-6 col-sm-3'>Current Hostname</div>
-  <div class='col-sm-3'><input type="text" class="form-control disabled" id="current_hostname" name="current_hostname" value="<?php echo $current_hostname[0]; ?>" disabled=""></div>
-  </div>
-  <div class='row'>
-  <div class='col-sm-offset-6 col-sm-3'>New Hostname</div>
-  <div class='col-sm-3'><input type="text" class="form-control" id="new_hostname" name="new_hostname"></div>
-  </div>
+                      <div class="fpbx-container">
+										<div class="display full-border">
+						<div class='container-fluid'>
+  <div class="element-container">
+	<div class="">
+		<div class="row form-group">
+			<div class="col-md-3">Current Hostname</div>
+  <div class='col-md-4'><input type="text" class="form-control disabled" id="current_hostname" name="current_hostname" value="<?php echo $current_hostname[0]; ?>" disabled=""></div>
+  </div></div></div>
+  <div class="element-container">
+	<div class="">
+		<div class="row form-group">
+			<div class="col-md-3">New Hostname</div>
+  <div class='col-md-4'><input type="text" class="form-control" id="new_hostname" name="new_hostname"></div>
+  </div></div></div>
   <br><br>
-  <div class='row'>
-  <div class='col-sm-offset-6 col-sm-3'>Current Domainname</div>
-  <div class='col-sm-3'><input type="text" class="form-control disabled" id="current_domainname" name="current_domainname" value="<?php echo $current_domainname[0]; ?>" disabled=""></div>
-  </div>
-  <div class='row'>
-  <div class='col-sm-offset-6 col-sm-3'>New Domainname</div>
-  <div class='col-sm-3'><input type="text" class="form-control" id="new_domainname" name="new_domainname"></div>
-  </div>
+  <div class="element-container">
+	<div class="">
+		<div class="row form-group">
+			<div class="col-md-3">Current Domainname</div>
+  <div class='col-md-4'><input type="text" class="form-control disabled" id="current_domainname" name="current_domainname" value="<?php echo $current_domainname[0]; ?>" disabled=""></div>
+  </div></div></div>
+  <div class="element-container">
+	<div class="">
+		<div class="row form-group">
+			<div class="col-md-3">New Domainname</div>
+  <div class='col-md-4'><input type="text" class="form-control" id="new_domainname" name="new_domainname"></div>
+  </div></div></div>
   <input type="hidden" name="set_hostname" value="true">
   </form>
 </div>

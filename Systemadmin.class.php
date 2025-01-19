@@ -42,8 +42,10 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 					$interfaces[$file]['ipv6_assignment'] = '';
 					$interfaces[$file]['ipv6_address'] = array();
 					$interfaces[$file]['ipv6_gateway'] = '';
-					$interfaces[$file]['ipv6_accept_ra'] = ''; //0 = off, 1 = on, 2 = on + forwarding
+					$interfaces[$file]['ipv6_accept_ra'] = '1'; //0 = off, 1 = on, 2 = on + forwarding
 					$interfaces[$file]['ipv6_autoconf'] = '0'; //0 = off, 1 = on
+					$interfaces[$file]['dyn_ipv4_address'] = "";
+					$interfaces[$file]['dyn_ipv6_address'] = "";
 				}
 				return $interfaces;
 			}
@@ -203,8 +205,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 			$interface['dyn_ipv4_address'] = '';
 			foreach($output_dyn_4 AS $temp) {
 				$temp = explode(" ", $temp);
-				$ip = explode("/", $temp[5]);
-				$interface['dyn_ipv4_address'] .= $ip[0];
+				$interface['dyn_ipv4_address'] .= $temp[5];
 			}
 		}
 		exec("/usr/sbin/ip -6 address show dev $interface[name] | grep inet | grep dynamic", $output_dyn_6, $rc_ipv6);
@@ -212,8 +213,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 			$interface['dyn_ipv6_address'] = '';
 			foreach($output_dyn_6 AS $temp) {
 				$temp = explode(" ", $temp);
-				$ip = explode("/", $temp[5]);
-				$interface['dyn_ipv6_address'] .= "$ip[0]<br>\n";
+				$interface['dyn_ipv6_address'] .= "$temp[5], ";
 			}
 		}
 		return $interface;
@@ -259,6 +259,14 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 						$interface['ipv6_gateway'] = $matches[1];
 					}
 				}
+				else if (preg_match("/IPv6AcceptRA=(.*)/i", $line, $matches)) {
+					if ($matches[1] == "true") {
+						$interface['ipv6_accept_ra'] = "1";
+					}
+					else {
+						$interface['ipv6_accept_ra'] = "0";
+					}
+				}
 			}
 			fclose($file);
 		}
@@ -284,6 +292,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function get_nm_config ($interface) {
+		$interface['ipv6_accept_ra'] = trim(file_get_contents("/proc/sys/net/ipv6/conf/$interface[name]/accept_ra"));
 		exec("/usr/bin/nmcli -t device show $interface[name]", $output, $rc);
 		if ($rc == 0) {
 			$interface['unconfigured'] = false;
@@ -295,11 +304,32 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 						foreach($connection AS $con) {
 							if (preg_match("/ipv4.method:(.*)/i", $con, $ipv4_method)) {
 								$ipv4_method = explode(":", $ipv4_method[0]);
-								$interface['ipv4_assignment'] = $ipv4_method[1];
+								if ($ipv4_method[1] == "auto") {
+									$interface['ipv4_assignment'] = "dhcp";
+								}
+								else if ($ipv4_method[1] == "manual") {
+									$interface['ipv4_assignment'] = "static";
+								}
+								else {
+									$interface['ipv4_assignment'] = "unconfigured";
+								}
 							}
 							else if (preg_match("/ipv6.method:(.*)/i", $con, $ipv6_method)) {
 								$ipv6_method = explode(":", $ipv6_method[0]);
-								$interface['ipv6_assignment'] = $ipv6_method[1];
+								if ($ipv6_method[1] == "dhcp") {
+									$interface['ipv6_assignment'] = "dhcp";
+									$interface['ipv6_autoconf'] = '0';
+								}
+								else if ($ipv6_method[1] == "auto") {
+									$interface['ipv6_assignment'] = "dhcp";
+									$interface['ipv6_autoconf'] = '1';
+								}
+								else if ($ipv6_method[1] == "manual") {
+									$interface['ipv6_assignment'] = "static";
+								}
+								else {
+									$interface['ipv6_assignment'] = "unconfigured";
+								}
 							}
 							else if (preg_match("/ipv4.addresses:(.*)/i", $con, $ipv4_address)) {
 								$ipv4_address = explode(":", $ipv4_address[0]);
@@ -361,7 +391,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 	public function get_netplan_config ($interface) {
 		//Netplan configuration files are only accessible by root. We need to fetch them by a program which has setuid-bit enabled
 		// the 2>&1 at the end of the next line is required to catch any error messages
-		exec("/usr/local/freepbx/get_netplan_config --interface $interface[name] 2>&1", $temp_interface, $rc);
+		exec("/usr/local/freepbx/bin/get_netplan_config --interface $interface[name] 2>&1", $temp_interface, $rc);
 		if ($rc != 0) {
 			$err_msg = "";
 			foreach($temp_interface AS $line) {
@@ -371,7 +401,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 		}
 		else {
 			//Check if interface is unconfigured
-			exec("/usr/local/freepbx/get_netplan_config --interface $interface[name] --check_configured 2>&1", $output, $rc_check);
+			exec("/usr/local/freepbx/bin/get_netplan_config --interface $interface[name] --check_configured 2>&1", $output, $rc_check);
 			if ($rc_check != 0) {
 				$err_msg = "";
 				foreach($temp_interface AS $line) {
@@ -387,7 +417,6 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 			foreach($temp_interface AS $line) {
 				if (preg_match("/dhcp4:\s(.*)/i", $line, $matches)) {
 					if ($matches[1] == "true") {
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DHCP!!!<br>\n";
 						$interface['ipv4_assignment'] = "dhcp";
 					}
 				}

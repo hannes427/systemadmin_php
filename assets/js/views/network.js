@@ -2,30 +2,34 @@ function fetch_config(iface) {
     let result = interface.filter(x=> x.name == iface);
     $.each(result, function(key, val){
          if (val.ipv4_assignment == "static") {
-            $("#ipv4_assignment-static").attr("checked", "checked");
+             console.log(iface + " Static");
+            $("#ipv4_assignment-static").click();
             $(".ipv4_disabled").prop('disabled', false);
+            $("#ipv4_address").val(val.ipv4_address);
         }
         else if (val.ipv4_assignment == "dhcp") {
-            $("#ipv4_assignment-dhcp").attr("checked", "checked");
+             console.log(iface + " dhcp");
+            $("#ipv4_assignment-dhcp").click();
             $(".ipv4_disabled").prop('disabled', true);
+            $("#ipv4_address").val(val.dyn_ipv4_address);
         }
         else {
-            $("#ipv4_assignment-unconfigured").attr("checked", "checked");
+            $("#ipv4_assignment-unconfigured").click();
+             console.log(iface + " unconfigured");
             $(".ipv4_disabled").prop('disabled', true);
+            $("#ipv4_address").val("");
         }
-        $("#ipv4_address").val(val.ipv4_address);
         $("#ipv4_gateway").val(val.ipv4_gateway);
-
         if (val.ipv6_assignment == "static") {
-            $("#ipv6_assignment-static").attr("checked", "checked");
+            $("#ipv6_assignment-static").click();
             $(".ipv6_disabled").prop('disabled', false);
         }
         else if (val.ipv6_assignment == "dhcp") {
-            $("#ipv6_assignment-dhcp").attr("checked", "checked");
+            $("#ipv6_assignment-dhcp").click();
             $(".ipv6_disabled").prop('disabled', true);
         }
         else {
-            $("#ipv6_assignment-unconfigured").attr("checked", "checked");
+            $("#ipv6_assignment-unconfigured").click();
             $(".ipv6_disabled").prop('disabled', true);
         }
         document.getElementById("ipv6_address").innerHTML = "";
@@ -35,24 +39,26 @@ function fetch_config(iface) {
         var ta = $('#ipv6_address').val()
         $("#ipv6_gateway").val(val.ipv6_gateway);
         if (val.ipv6_autoconf == "1") {
-            $("#ipv6_autoconf_on").attr("checked", "checked");
+            $("#ipv6_autoconf_on").click();
         }
         else {
-            $("#ipv6_autoconf_off").attr("checked", "checked");
+            $("#ipv6_autoconf_off").click();
         }
         if (val.ipv6_accept_ra == "0") {
-            $("#ipv6_accept_ra_off").attr("checked", "checked");
+            $("#ipv6_accept_ra_off").click();
         }
         else if (val.ipv6_accept_ra == "1") {
-            $("#ipv6_accept_ra_on").attr("checked", "checked");
+            $("#ipv6_accept_ra_on").click();
         }
         else {
-            $("ipv6_accept_ra_forwarding").attr("checked", "checked");
+            $("#ipv6_accept_ra_forwarding").click();
         }
     });
 };
 
-$(document).on('change','#network_interface',function(){
+$(document).on('click','#network_interface',function(){
+    $("#network_interface").off("change");
+    console.log($(this).val());
     fetch_config($(this).val());
 });
 

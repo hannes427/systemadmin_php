@@ -1,6 +1,5 @@
 <?php
 if(isset($_POST['set_email']) && $_POST['set_email'] == "true") {
-    echo "form submitted";
     $setup = $_POST['email_server'];
     $myhostname = trim($_POST['myhostname']);
     $mydomain = trim($_POST['mydomain']);

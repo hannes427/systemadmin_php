@@ -1,37 +1,119 @@
 <?php
 if(isset($_POST['set_network']) && $_POST['set_network'] == "true") {
-  echo "Form submitted!<br><br>";
-  print_r($_POST);
-  echo "<br><br>";
+    $arguments = "";
+    $arguments .= " --interface $_POST[network_interface]";
+   if (array_key_exists("nm_connection_$_POST[network_interface]", $_POST) && $_POST["nm_connection_$_POST[network_interface]"] != "") {
+        $conn =  $_POST["nm_connection_$_POST[network_interface]"];
+        $arguments .= " --connection $conn";
+    }
+    $arguments .= " --ipv4-assignment $_POST[ipv4_assignment]";
+    if (array_key_exists('ipv4_address', $_POST) && $_POST['ipv4_address'] != "") {
+      $temp_ip4 = explode("/", $_POST['ipv4_address']);
+    }
+    if (array_key_exists('ipv4_gateway', $_POST) && trim($_POST['ipv4_gateway']) != "") {
+      $arguments .= " --ipv4-gateway ".trim($_POST['ipv4_gateway']);
+    }
+    $arguments .= " --ipv6-assignment $_POST[ipv6_assignment]";
+    if (array_key_exists('ipv6_address', $_POST)) {
+        $temp_ip6 = explode("/", $_POST['ipv6_address']);
+    }
+    if (array_key_exists('ipv6_gateway', $_POST) && trim($_POST['ipv6_gateway']) != "") {
+        $arguments .= " --ipv6-gateway ".trim($_POST['ipv6_gateway']);
+    }
+    if (array_key_exists('ipv6_autoconf', $_POST)) {
+      $arguments .= " --ipv6-autoconf $_POST[ipv6_autoconf]";
+    }
+    if (array_key_exists('ipv6_accept_ra', $_POST)) {
+      $arguments .= " --ipv6-accept-ra $_POST[ipv6_accept_ra]";
+    }
+    $arguments .= " --managed-by $_POST[managed_by]";
+
+    //Vallidation
+    $error = false;
+    if (!preg_match("/^[a-z]+[0-9]{1,3}$/i", $_POST['network_interface'])) {
+        $error = true;
+    }
+    if (isset($temp_ip4)) {
+      if (count($temp_ip4) != "2") {
+        $error = true;
+      }
+      else {
+        if (!filter_var($temp_ip4[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)|| !preg_match("/^\d\d$/", $temp_ip4[1])) {
+            $error = true;
+          }
+          else {
+              $arguments .= " --ipv4-address $temp_ip4[0]/$temp_ip4[1]";
+          }
+      }
+    }
+    if ((isset($_POST['ipv4_gateway']) && $_POST['ipv4_gateway'] != "") && !filter_var($_POST['ipv4_gateway'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        $error = true;
+    }
+    if (isset($temp_ip6)) {
+      if (count($temp_ip6) != "2") {
+        $error = true;
+      }
+      else {
+        if (!filter_var($temp_ip6[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            $error = true;
+          }
+          else {
+              $arguments .= " --ipv6-address $temp_ip6[0]/$temp_ip6[1]";
+          }
+      }
+    }
+     if ((isset($_POST['ipv6_gateway']) && $_POST['ipv6_gateway'] != "") && !filter_var($_POST['ipv6_gateway'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        $error = true;
+    }
+    if(!$error) {
+        exec("/usr/local/freepbx/bin/networktest $arguments 2>&1", $output, $rc);
+        if ($rc != 0) {
+            $err_msg = "";
+            foreach($output AS $line) {
+                $err_msg .= "$line\n";
+            }
+            throw new \Exception("Can't update naetwork config: $err_msg");
+        }
+    }
 }
 $interfaces = FreePBX::Systemadmin()->getInterfaces();
 foreach($interfaces AS $interface) {
     if (FreePBX::Systemadmin()->check_ifupdown ($interface)) {
-        echo "ifupdown()<br>\n";
+        $managed_by = "ifupdown";
         $interface = FreePBX::Systemadmin()->get_ifupdown_config($interface);
     }
     else if (FreePBX::Systemadmin()->check_netplan ($interface)) {
-      echo "netplan()<br>\n";
+      $managed_by = "netplan";
       $interface = FreePBX::Systemadmin()->get_netplan_config ($interface);
     }
     else if (FreePBX::Systemadmin()->check_systemd_networkd ($interface)) {
-        echo "systemd()<br>\n";
+        $managed_by = "networkd";
         $interface = FreePBX::Systemadmin()->get_systemd_networkd_config($interface);
     }
     else if (FreePBX::Systemadmin()->check_networkManager ($interface)) {
-        echo "networkManager()<br>\n";
+        $managed_by = "network_manager";
         $interface = FreePBX::Systemadmin()->get_nm_config($interface);
+    }
+    if ($interface['ipv4_assignment'] == "dhcp") {
+      exec("/usr/sbin/ip -4 r | grep default | grep \"dev $interface[name]\"", $output_routing, $rc_routing);
+      if($rc_routing == 0) {
+        if(preg_match("/default\svia\s(.*)\s/iU", $output_routing[0], $matches)) {
+          $interface['ipv4_gateway'] = $matches[1];
+        }
+      }
+    }
+    if($interface['ipv6_accept_ra'] == "") {
+      $interface['ipv6_accept_ra'] = "1";
     }
     $interfaces[$interface['name']] = $interface;
 }
 ksort($interfaces);
-print_r($interfaces);
 echo "<script>\n";
 $i = 1;
 $len = count($interfaces);
 echo "var interface = [ ";
 foreach($interfaces AS $key => $interface) {
-  echo "{ \"name\": \"$interface[name]\", \"unconfigured\": \"$interface[unconfigured]\", \"ipv4_assignment\": \"$interface[ipv4_assignment]\", \"ipv4_address\": \"$interface[ipv4_address]\", \"ipv4_gateway\": \"$interface[ipv4_gateway]\", \"ipv6_assignment\": \"$interface[ipv6_assignment]\", \"ipv6_address\": [ ";
+  echo "{ \"name\": \"$interface[name]\", \"unconfigured\": \"$interface[unconfigured]\", \"ipv4_assignment\": \"$interface[ipv4_assignment]\", \"ipv4_address\": \"$interface[ipv4_address]\", \"ipv4_gateway\": \"$interface[ipv4_gateway]\", \"dyn_ipv4_address\": \"$interface[dyn_ipv4_address]\", \"ipv6_assignment\": \"$interface[ipv6_assignment]\", \"ipv6_address\": [ ";
   foreach($interface['ipv6_address'] AS $ipv6_address) {
     echo "{ \"address\": \"$ipv6_address\"}, ";
   }
@@ -41,7 +123,7 @@ foreach($interfaces AS $key => $interface) {
   }
   $i++;
 }
-echo "]\n</script>\n";
+echo " ]\n</script>\n";
 ?>
 <script src="modules/systemadmin/assets/js/views/network.js"></script>
 <div class="container-fluid">
@@ -57,7 +139,16 @@ echo "]\n</script>\n";
 	<div class="">
 		<div class="row form-group">
 			<div class="col-md-3">Interface</div>
-  <div class="col-md-9"><select name="network_interface" id="network_interface" class="form-control"><?php foreach($interfaces AS $interface) { echo "<option value=\"$interface[name]\">$interface[name]</option>\n"; } ?></select></div>
+  <div class="col-md-9"><select name="network_interface" id="network_interface" class="form-control">
+  <?php
+  foreach($interfaces AS $interface) {
+    echo "<option value=\"$interface[name]\"";
+    if(isset($_POST['network_interface']) && $_POST['network_interface'] == $interface['name']) {
+      echo " selected=\"selected\"";
+    }
+  echo ">$interface[name]</option>\n";
+  }
+  ?></select></div>
   </div></div></div>
   <div class="element-container">
 	<div class="">
@@ -72,7 +163,8 @@ echo "]\n</script>\n";
 	<div class="">
 		<div class="row form-group">
 			<div class="col-md-3">IPv4 address/netmask</div>
-  <div class="col-md-9"><input type="text" id="ipv4_address" name="ipv4_address" class="ipv4_disabled form-control"></div>
+  <div class="col-md-9"><input type="text" id="ipv4_address" name="ipv4_address" class="ipv4_disabled form-control">
+  </div>
   </div></div></div>
   <div class="element-container">
 	<div class="">
@@ -98,7 +190,7 @@ echo "]\n</script>\n";
 	<div class="">
 		<div class="row form-group">
 			<div class="col-md-3">IPv6 address/netmask</div>
-  <div class='col-md-4'><textarea id="ipv6_address" name="ipv6_address" rows="5" cols="31" class="ipv6_disabled form-control"></textarea></div>
+  <div class='col-md-9'><input type="text" id="ipv6_address" name="ipv6_address" class="ipv6_disabled form-control"></div>
   </div></div></div>
   <div class="element-container">
 	<div class="">
@@ -129,9 +221,10 @@ echo "]\n</script>\n";
 <?php
 foreach ($interfaces AS $interface) {
   if(array_key_exists('nm_connection', $interface)) {
-    echo "<input type=\"hidden\" name=\"nm_connection_$interface[name]\" value=\"$interface[nm_connection]\">";
+    echo "<input type=\"hidden\" name=\"nm_connection_$interface[name]\" value=\"$interface[nm_connection]\">\n";
   }
 }
+echo "<input type=\"hidden\" name=\"managed_by\" value=\"$managed_by\">\n";
 ?>
 </div>
 </form>

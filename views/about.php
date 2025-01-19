@@ -9,6 +9,22 @@ foreach($file AS $tempfile) {
         $os_release[$temp[0]] = $temp[1];
 }
 $version = get_framework_version();
+$system_id = \FreePBX::Config()->get("FREEPBX_SYSTEM_IDENT");
+exec("/usr/sbin/asterisk -x 'core show version'", $output_version, $version_rc);
+if ($version_rc == 0) {
+  $asterisk_version = explode(" ", $output_version[0]);
+  $asterisk_version = $asterisk_version[1];
+}
+else {
+  $asterisk_version = "unknown";
+}
+//Get system uptime
+$str   = @file_get_contents('/proc/uptime');
+$num   = floatval($str);
+$secs  = fmod($num, 60); $num = (int)($num / 60);
+$mins  = $num % 60;      $num = (int)($num / 60);
+$hours = $num % 24;      $num = (int)($num / 24);
+$days  = $num;
 ?>
 
 <div class="container-fluid">
@@ -24,11 +40,31 @@ $version = get_framework_version();
   <div class='col-sm-3'><?php echo $os_release['PRETTY_NAME']; ?></div>
   </div>
   <div class='row'>
+  <div class='col-sm-offset-6 col-sm-3'>System Uptime:</div>
+  <div class='col-sm-3'>
+  <?php if ($days >0) {
+   echo "$days "._("days").", ";
+  }
+  if ($hours >0) {
+   echo "$hours "._("hours").", ";
+  }
+  if ($mins >0) {
+   echo "$mins "._("minutes");
+  }
+ ?></div>
+  </div>
+  <div class='row'>
   <div class='col-sm-offset-6 col-sm-3'>PBX Version:</div>
   <div class='col-sm-3'><?php echo $version; ?></div>
   </div>
-IT WORKS!!!! Generated for Systemadmin
-fokbdlkfbfkgb<br><br>fkljhkflkhjflhjflkghjkfl<br><br>
+  <div class='row'>
+  <div class='col-sm-offset-6 col-sm-3'>Asterisk Version:</div>
+  <div class='col-sm-3'><?php echo $asterisk_version; ?></div>
+  </div>
+  <div class='row'>
+  <div class='col-sm-offset-6 col-sm-3'>System namen:</div>
+  <div class='col-sm-3'><?php echo $system_id; ?></div>
+  </div>
 </div>
 </div>
 </div>
