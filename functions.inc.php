@@ -33,4 +33,15 @@ function systemadminFetchEmailConfig() {
 	}
 	return $emailconfig;
 }
+
+function systemadminFetchPacketCaptures() {
+	$packetcaptures = array();
+    $dbh = \FreePBX::Database();
+    $sql = 'SELECT id, date, stopped FROM systemadmin_packetcapture';
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+    $packetcapture = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	return $packetcapture;
+}
+
 ?>

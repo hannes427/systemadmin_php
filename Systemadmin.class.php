@@ -1,5 +1,6 @@
 <?php
 namespace FreePBX\modules;
+use splitbrain\PHPArchive\Tar;
 /*
  * Class stub for BMO Module class
  * In _Construct you may remove the database line if you don't use it
@@ -557,9 +558,12 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 		echo load_view($view);
 		return load_view(__DIR__."/views/rnav.php");
 	}
-	public function ajaxRequest($req, &$setting) {
-		switch ($req) {
-			case 'getJSON':
+	public function ajaxRequest($command, &$setting) {
+		switch ($command) {
+			case 'powermgmt':
+			case 'localdownload':
+			case 'localdelete':
+			case 'localstop':
 				return true;
 			break;
 			default:
@@ -567,21 +571,121 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 			break;
 		}
 	}
+
+	public function FetchPacketCaptureById($id) {
+		$packetcapture = array();
+		$sql = "SELECT date FROM systemadmin_packetcapture WHERE id = '$id'";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$packetcapture = $stmt->fetch(\PDO::FETCH_ASSOC);
+		return $packetcapture;
+	}
+
+	public function getCapturePath ($id) {
+		$data = $this->FetchPacketCaptureById($id);
+		$date = explode(" ", $data['date']);
+		$temp = explode("-", $date[0]);
+		$temp1 = explode(":", $date[1]);
+		$year = $temp[0];
+		$month = $temp[1];
+		$day = $temp[2];
+		$hour = $temp1[0];
+		$min = $temp1[1];
+		$sec = $temp1[2];
+		$capture = "/var/spool/asterisk/packetcapture/$day-$month-$year"."_$hour-$min-$sec/";
+		return $capture;
+	}
+
+	public function getCapturePid($id) {
+		$pid = -1;
+		$capture = $this->getCapturePath($id);
+		exec("/usr/bin/ps -ef | /usr/bin/grep $capture | /usr/bin/grep -v grep | /usr/bin/awk -F' ' {'print $2'}", $pid_output, $rc);
+		if (array_key_exists(0, $pid_output)) {
+			$pid = $pid_output[0];
+		}
+		return $pid;
+	}
+
+	public function preparecapturedownload($id) {
+		$capture = $this->getCapturePath($id);
+		$dirname = basename($capture);
+		$tar = new Tar();
+		$tar->create("/tmp/$dirname.tar.gz");
+        $tar->addFile("$capture", "$dirname");
+		if ($handle = opendir("$capture")) {
+			while (false !== ($file = readdir($handle))) {
+				if ($file == '.' || $file == '..') {
+					continue;
+				}
+				exec("cp $capture/$file /tmp");
+				$tar->addFile("/tmp/$file", "$dirname/$file");
+				exec("rm /tmp/$file");
+			}
+		}
+		$tar->close();
+		$tarfile = "/tmp/$dirname.tar.gz";
+		return $tarfile;
+	}
+
 	public function ajaxHandler(){
 		switch ($_REQUEST['command']) {
-			case 'getJSON':
-				switch ($_REQUEST['jdata']) {
-					case 'grid':
-						$ret = array();
-						/*code here to generate array*/
-						return $ret;
+			case 'powermgmt':
+				switch ($_REQUEST['action']) {
+					case 'reboot':
+						exec("/usr/local/freepbx/bin/powermgmt reboot 2>&1 ", $output, $rc);
+						return $rc;
 					break;
-
+					case 'poweroff':
+						exec("/usr/local/freepbx/bin/powermgmt shutdown 2>&1 ", $output, $rc);
+						return $rc;
+					break;
 					default:
 						return false;
 					break;
 				}
 			break;
+			case 'localdownload':
+				if (empty($_REQUEST['id']) || !preg_match("/^[0-9]+$/", $_REQUEST['id'])) {
+					return false;
+				}
+				$id = $_REQUEST['id'];
+				$path = $this->preparecapturedownload($id);
+				header("Content-disposition: attachment; filename=".basename((string) $path));
+				header("Content-type: application/octet-stream");
+				readfile($path);
+				system("rm $path");
+				exit;
+			break;
+			case 'localdelete':
+				if (empty($_REQUEST['id']) || !preg_match("/^[0-9]+$/", $_REQUEST['id'])) {
+					return false;
+				}
+				$id = $_REQUEST['id'];
+				$pid = $this->getCapturePid($id);
+				$path = $this->getCapturePath($id);
+				exec("/usr/local/freepbx/bin/packet_capture deletecapture $pid $path 2>&1");
+				$sql = "DELETE FROM systemadmin_packetcapture WHERE id = '$id'";
+				$stmt = $this->db->prepare($sql);
+				$stmt->execute();
+				$result = $stmt->fetch(\PDO::FETCH_ASSOC);
+				header('Location: /admin/config.php?display=systemadmin&view=packetcapture&tab=jobs');
+				exit;
+			break;
+			case 'localstop':
+				if (empty($_REQUEST['id']) || !preg_match("/^[0-9]+$/", $_REQUEST['id'])) {
+					return false;
+				}
+				$id = $_REQUEST['id'];
+				$pid = $this->getCapturePid($id);
+				exec("/usr/local/freepbx/bin/packet_capture stopcapture $pid 2>&1");
+				$sql = "UPDATE systemadmin_packetcapture SET stopped='yes' WHERE id = '$id'";
+				$stmt = $this->db->prepare($sql);
+				$stmt->execute();
+				$result = $stmt->fetch(\PDO::FETCH_ASSOC);
+				header('Location: /admin/config.php?display=systemadmin&view=packetcapture&tab=jobs');
+				exit;
+			break;
+
 
 			default:
 				return false;

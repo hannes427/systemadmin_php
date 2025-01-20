@@ -66,7 +66,7 @@ if(isset($_POST['set_network']) && $_POST['set_network'] == "true") {
         $error = true;
     }
     if(!$error) {
-        exec("/usr/local/freepbx/bin/networktest $arguments 2>&1", $output, $rc);
+        exec("/usr/local/freepbx/bin/network $arguments 2>&1", $output, $rc);
         if ($rc != 0) {
             $err_msg = "";
             foreach($output AS $line) {

@@ -26,5 +26,10 @@
       <field name="module" type="string" length="30"/>
       <field name="timestamp" type="integer" unsigned="true"/>
     </table>
+    <table name="systemadmin_packetcapture">
+    <field name="id" type="integer" unsigned="true" primarykey="true" autoincrement="true"/>
+    <field name="date" type="datetime"/>
+    <field name="stopped" type="string" length="3" default="no"/>
+  </table>
   </database>
 </module>

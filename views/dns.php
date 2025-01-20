@@ -58,17 +58,7 @@ if(isset($_POST['set_dns']) && $_POST['set_dns'] == "true") {
         }
         throw new \Exception("Can't update naetwork config: $err_msg");
       }
-    foreach($output AS $line) {
-      echo "$line<br>";
-    }
-    echo "Ja<br><br>$arguments";
   }
-  else {
-    echo "Nein<br><br>$arguments";
-  }
-
-  print_r($_POST);
-  echo "<br><br><br>";
 }
 $nameservers = array();
 $search = array();
@@ -94,9 +84,6 @@ if (is_link("/etc/resolv.conf")) {
   }
   else if ($resolv_conf == "../run/systemd/resolve/stub-resolv.conf") {
     exec("/usr/bin/resolvectl status", $output_dns_server);
-    echo "<br>br><br>";
-    print_r($output_dns_server);
-    echo "<br><br><br>";
     foreach($output_dns_server AS $line) {
       if (preg_match("/DNS Servers:\s(.*)$/", $line, $matches)) {
         $temp_server = explode(" ", $matches[1]);

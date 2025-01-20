@@ -62,7 +62,7 @@ $days  = $num;
   <div class='col-sm-3'><?php echo $asterisk_version; ?></div>
   </div>
   <div class='row'>
-  <div class='col-sm-offset-6 col-sm-3'>System namen:</div>
+  <div class='col-sm-offset-6 col-sm-3'>System name:</div>
   <div class='col-sm-3'><?php echo $system_id; ?></div>
   </div>
 </div>

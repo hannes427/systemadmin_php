@@ -44,7 +44,7 @@ if(isset($_POST['set_email']) && $_POST['set_email'] == "true") {
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        exec("/usr/local/freepbx/email_settings --setup \"$setup\" --myhostname \"$myhostname\" --mydomain \"$mydomain\" --myorigin \"$myorigin\"  --myorigin_path \"$myorigin_path\" --server \"$relayhost\" --use_auth \"$smtp_sasl_auth_enable\" --use_tls \"$smtp_use_tls\" --port \"$port\" --username \"$username\" --password \"$password\" --password_changed \"$password_changed\" 2>&1", $output, $rc);
+        exec("/usr/local/freepbx/bin/email_settings --setup \"$setup\" --myhostname \"$myhostname\" --mydomain \"$mydomain\" --myorigin \"$myorigin\"  --myorigin_path \"$myorigin_path\" --server \"$relayhost\" --use_auth \"$smtp_sasl_auth_enable\" --use_tls \"$smtp_use_tls\" --port \"$port\" --username \"$username\" --password \"$password\" --password_changed \"$password_changed\" 2>&1", $output, $rc);
         if ($rc != 0) {
             $err_msg = "";
             foreach($output AS $line) {

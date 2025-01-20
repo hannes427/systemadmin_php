@@ -6,6 +6,8 @@
 <a class="list-group-item" href="config.php?display=systemadmin&view=network">Network Config</a>
 <a class="list-group-item" href="config.php?display=systemadmin&view=notifications">Notifications Config</a>
 <a class="list-group-item" href="config.php?display=systemadmin&view=email">e-mail Configuration</a>
+<a class="list-group-item" href="config.php?display=systemadmin&view=power">Power</a>
+<a class="list-group-item" href="config.php?display=systemadmin&view=packetcapture">Packet Capture</a>
 </div>
 </div>
 </div>
