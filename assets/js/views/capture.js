@@ -2,7 +2,6 @@ $(document)
 .on('click', '#localdownload', function(e) {
     e.preventDefault(); //stop submit
     var id = ($(this).attr('name'));
-    console.log("Hallo " + id;
     var req = {
         module: 'systemadmin',
         command: 'localdownload',
@@ -39,7 +38,6 @@ $(document)
 .on('click', '#localstop', function(e) {
     e.preventDefault(); //stop submit
     var id = ($(this).attr('name'));
-    console.log(id);
     var req = {
         module: 'systemadmin',
         command: 'localstop',
