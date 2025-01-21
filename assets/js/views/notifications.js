@@ -2,7 +2,7 @@ function ValidateEmail(input) {
     if (input.length == 0) {
         return true;
     }
-    var validRegex = /^[a-zA-Z0-9\.!#%&'\*+\-\/=\?\^_`\{\|\}\~]+@[a-zA-Z0-9]+-*[a-zA-Z0-9.][a-zA-Z0-9]+\.\w{2,}$/;
+    var validRegex = /^[a-zA-Z0-9\.!#%&'\*+\-\/=\?\^_`\{\|\}\~]+@[a-zA-Z0-9\-]+[a-zA-Z0-9.][a-zA-Z0-9]+\.\w{2,}$/;
     if (input.match(validRegex)) {
         return true;
     }

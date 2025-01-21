@@ -12,6 +12,15 @@
     <systemadmin>Systemadmin</systemadmin>
   </menuitems>
   <supported>17.0</supported>
+  <hooks>
+    <framework class="Chown" namespace="FreePBX\Console\Command">
+      <method callingMethod="fwcChownFiles" class="Systemadmin" namespace="FreePBX\modules">chownFreepbx</method>
+    </framework>
+  </hooks>
+  <depends>
+    <file>/usr/local/freepbx</file>
+    <version>17.0.1</version>
+  </depends>
   <database>
     <table name="systemadmin_settings">
       <field name="key" type="string" length="30"/>

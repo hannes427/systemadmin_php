@@ -16,16 +16,67 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 		$this->FreePBX = $freepbx;
 		$this->db = $freepbx->Database;
 	}
-	//Install method. use this or install.php using both may cause weird behavior
-	public function install() {}
-	//Uninstall method. use this or install.php using both may cause weird behavior
-	public function uninstall() {}
-	//Not yet implemented
+
+	public function install() {
+		$spooldir = $this->FreePBX->Config->get('ASTSPOOLDIR');
+		$dir = is_dir("$spooldir/packetcapture") || mkdir("$spooldir/packetcapture", 0755, true);
+		$this->addCronJob();
+	}
+
+	public function uninstall() {
+		$sql = "DROP TABLE IF EXISTS `systemadmin_settings`, `systemadmin_logs`, `systemadmin_packetcapture`";
+
+		try {
+			$sth = $this->db->prepare($sql);
+			return $sth->execute();
+
+		} catch(PDOException $e) {
+			return $e->getMessage();
+		}
+		$spooldir = $this->FreePBX->Config->get('ASTSPOOLDIR');
+		$this->deleteDirectory("$spooldir/packetcapture");
+	}
+
 	public function backup() {}
 	//not yet implimented
 	public function restore($backup) {}
 	//process form802.11
 	public function doConfigPageInit($page) {}
+
+	public function chownFreepbx () {
+		$files = array(
+			array('type' => 'rdir',
+			'path' => '/var/spool/asterisk/packetcapture',
+			'perms' => 0755)
+		);
+		return $files;
+	}
+
+	public function deleteDirectory($str) {
+        if (is_file($str)) {
+			return unlink($str);
+        }
+        elseif (is_dir($str)) {
+			$scan = glob(rtrim($str, '/').'/*');
+			foreach($scan as $index=>$path) {
+				deleteAll($path);
+			}
+			return @rmdir($str);
+        }
+	}
+
+	public function addCronJob() {
+		$this->removeCronJob();
+		$this->FreePBX->Job()->addCommand("systemadmin", "updateCaptureTable", "[ -e /usr/local/freepbx/php/updateCaptureTable.php ] && /usr/local/freepbx/php/updateCaptureTable.php", "0 6 * * *");
+		$this->FreePBX->Job()->addCommand("systemadmin", "sendCaptureWaring", "[ -e /usr/local/freepbx/php/sendCaptureWaring.php ] && /usr/local/freepbx/php/sendCaptureWaring.php", "0 7 * * *");
+		$this->FreePBX->Job()->addCommand("systemadmin", "sendStorageNotifications", "[ -e /usr/local/freepbx/php/sendStorageNotifications.php ] && /usr/local/freepbx/php/sendStorageNotifications.php", "@hourly");
+	}
+
+	public function removeCronJob() {
+		$this->FreePBX->Job()->remove("systemadmin", "updateCaptureTable");
+		$this->FreePBX->Job()->remove("systemadmin", "sendCaptureWaring");
+		$this->FreePBX->Job()->remove("systemadmin", "sendStorageNotifications");
+	}
 
 	//get all network interfaces
 	public function getInterfaces() {
