@@ -3,55 +3,55 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-21 15:13+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2025-01-21 15:53+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4\n"
 
 #: about.php:39
 msgid "Operating System"
-msgstr ""
+msgstr "Betriebssystem"
 
 #: about.php:43
 msgid "System uptime"
-msgstr ""
+msgstr "Betriebszeit"
 
 #: about.php:46
 msgid "days"
-msgstr ""
+msgstr "Tage"
 
 #: about.php:49
 msgid "hours"
-msgstr ""
+msgstr "Stunden"
 
 #: about.php:52
 msgid "minutes"
-msgstr ""
+msgstr "Minuten"
 
 #: about.php:57
 msgid "PBX Version"
-msgstr ""
+msgstr "PBX Version"
 
 #: about.php:61
 msgid "Asterisk Version"
-msgstr ""
+msgstr "Asterisk Version"
 
 #: about.php:65
 msgid "System name"
-msgstr ""
+msgstr "Systemname"
 
 #: dns.php:159
 msgid "DNS server"
-msgstr ""
+msgstr "DNS server"
 
 #: dns.php:175
 msgid "DNS search list"
@@ -59,75 +59,75 @@ msgstr ""
 
 #: email.php:163
 msgid "Send e-mail via"
-msgstr ""
+msgstr "Sende eMail &uuml;ber"
 
 #: email.php:164
 msgid "Local"
-msgstr ""
+msgstr "Lokal"
 
 #: email.php:165 email.php:226
 msgid "Remote server"
-msgstr ""
+msgstr "entfernten Server"
 
 #: email.php:174
 msgid "Myhostname"
-msgstr ""
+msgstr "Myhostname"
 
 #: email.php:187
 msgid "Mydomain"
-msgstr ""
+msgstr "Mydomain"
 
 #: email.php:200
 msgid "Myorigin"
-msgstr ""
+msgstr "Myorigin"
 
 #: email.php:239
 msgid "Use Authentication"
-msgstr ""
+msgstr "Authentifizierung benutzen"
 
 #: email.php:240 email.php:284
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: email.php:241 email.php:285
 msgid "No"
-msgstr ""
+msgstr "Nein"
 
 #: email.php:250
 msgid "Username"
-msgstr ""
+msgstr "Benutzername"
 
 #: email.php:267
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: email.php:283
 msgid "Use TLS encrytion"
-msgstr ""
+msgstr "TLS Verschl&uuml;sselung benutzen"
 
 #: email.php:294
 msgid "TLS Port"
-msgstr ""
+msgstr "TLS Port"
 
 #: hostname.php:53
 msgid "Current Hostname"
-msgstr ""
+msgstr "Aktueller Computername"
 
 #: hostname.php:59
 msgid "New Hostname"
-msgstr ""
+msgstr "Neuer Computername"
 
 #: hostname.php:66
 msgid "Current Domainname"
-msgstr ""
+msgstr "Aktueller Domainname"
 
 #: hostname.php:72
 msgid "New Domainname"
-msgstr ""
+msgstr "Neuer Domainname"
 
 #: notifications.php:35
 msgid "Sender e-mail address"
-msgstr ""
+msgstr "Absender eMail-Adresse"
 
 #: notifications.php:47
 msgid "Storage e-mail address"
@@ -135,43 +135,43 @@ msgstr ""
 
 #: packetcapture.php:28
 msgid "Start new Capture"
-msgstr ""
+msgstr "Neue Aufzeichnung starten"
 
 #: packetcapture.php:31
 msgid "Jobs"
-msgstr ""
+msgstr "Auftr&auml;ge"
 
 #: power.php:37
 msgid "Reboot System"
-msgstr ""
+msgstr "Computer enustarten"
 
 #: power.php:43
 msgid "Power Off System"
-msgstr ""
+msgstr "Computer ausschalten"
 
 #: rnav.php:3
 msgid "DNS"
-msgstr ""
+msgstr "DNS"
 
 #: rnav.php:4
 msgid "Timezone"
-msgstr ""
+msgstr "Zeitzone"
 
 #: rnav.php:5
 msgid "Hostname"
-msgstr ""
+msgstr "Computername"
 
 #: rnav.php:6
 msgid "Network Config"
-msgstr ""
+msgstr "Netzwerkkonfiguration"
 
 #: rnav.php:7
 msgid "Notifications Config"
-msgstr ""
+msgstr "Benachrichtigungseinstellungen"
 
 #: rnav.php:8
 msgid "e-mail Configuration"
-msgstr ""
+msgstr "eMail-Konfiguration"
 
 #: rnav.php:9
 msgid "Power management"
@@ -179,68 +179,68 @@ msgstr ""
 
 #: rnav.php:10
 msgid "Packet Capture"
-msgstr ""
+msgstr "Paketaufzeichnungen"
 
 #: timezone.php:52
 msgid "Warning: Please reboot the system to take effect the changes!"
-msgstr ""
+msgstr "Achtung: Bitte nach einer Änderung den Computer neustarten!"
 
 #: timezone.php:57
 msgid "Time Zone"
-msgstr ""
+msgstr "Zeitzone"
 
 #: view.jobs.php:4
 msgid "No Captures found. Please start a capture first"
-msgstr ""
+msgstr "Keine Aufzeichnungen gefunden. Bitte zuerst eine Aufzeichnung starten"
 
 #: view.jobs.php:9
 msgid "Capture date"
-msgstr ""
+msgstr "Datum der Aufzeichnung"
 
 #: view.jobs.php:9
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 #: view.startcapture.php:103
 msgid "Listen on interface"
-msgstr ""
+msgstr "Auf Interface lauschen"
 
 #: view.startcapture.php:114
 msgid "IP version"
-msgstr ""
+msgstr "IP version"
 
 #: view.startcapture.php:116 view.startcapture.php:126
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 #: view.startcapture.php:117
 msgid "IPv4"
-msgstr ""
+msgstr "IPv4"
 
 #: view.startcapture.php:118
 msgid "IPv6"
-msgstr ""
+msgstr "IPv6"
 
 #: view.startcapture.php:124
 msgid "Protocol"
-msgstr ""
+msgstr "Protokoll"
 
 #: view.startcapture.php:136
 msgid "Host"
-msgstr ""
+msgstr "Computer"
 
 #: view.startcapture.php:142
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: view.startcapture.php:149
 msgid "Max file size"
-msgstr ""
+msgstr "Maximale Dateigr&ouml;e"
 
 #: view.startcapture.php:155
 msgid "Max file count"
-msgstr ""
+msgstr "Maximale Anzahl an Dateien"
 
 #: view.startcapture.php:161
 msgid "Packet Count"
-msgstr ""
+msgstr "Anzahl an Paketen"
