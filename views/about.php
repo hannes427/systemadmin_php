@@ -36,11 +36,11 @@ $days  = $num;
 										<div class="display full-border">
 						<div class='container-fluid'>
   <div class='row'>
-  <div class='col-sm-offset-6 col-sm-3'>Operating System:</div>
+  <div class='col-sm-offset-6 col-sm-3'><?php echo _("Operating System");?>:</div>
   <div class='col-sm-3'><?php echo $os_release['PRETTY_NAME']; ?></div>
   </div>
   <div class='row'>
-  <div class='col-sm-offset-6 col-sm-3'>System Uptime:</div>
+  <div class='col-sm-offset-6 col-sm-3'><?php echo _("System uptime");?>:</div>
   <div class='col-sm-3'>
   <?php if ($days >0) {
    echo "$days "._("days").", ";
@@ -54,15 +54,15 @@ $days  = $num;
  ?></div>
   </div>
   <div class='row'>
-  <div class='col-sm-offset-6 col-sm-3'>PBX Version:</div>
+  <div class='col-sm-offset-6 col-sm-3'><?php echo _("PBX Version");?>:</div>
   <div class='col-sm-3'><?php echo $version; ?></div>
   </div>
   <div class='row'>
-  <div class='col-sm-offset-6 col-sm-3'>Asterisk Version:</div>
+  <div class='col-sm-offset-6 col-sm-3'><?php echo _("Asterisk Version");?>:</div>
   <div class='col-sm-3'><?php echo $asterisk_version; ?></div>
   </div>
   <div class='row'>
-  <div class='col-sm-offset-6 col-sm-3'>System name:</div>
+  <div class='col-sm-offset-6 col-sm-3'><?php echo _("System name");?>:</div>
   <div class='col-sm-3'><?php echo $system_id; ?></div>
   </div>
 </div>

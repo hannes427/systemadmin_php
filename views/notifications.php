@@ -32,7 +32,7 @@ $email = systemadminFetchEmail();
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">Sender e-mail address</div>
+			<div class="col-md-3"><?php echo _("Sender e-mail address");?></div>
   <div class="col-md-9"><input type="text" id="from_address" name="from_address" class="form-control"
   <?php
   if(array_key_exists('fromemail', $email)) {
@@ -44,7 +44,7 @@ $email = systemadminFetchEmail();
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">Storage e-mail address</div>
+			<div class="col-md-3"><?php echo _("Storage e-mail address");?></div>
   <div class="col-md-9 radioset"><input type="text" id="storage_address" name="storage_address" class="form-control"
   <?php
   if(array_key_exists('storageemail', $email)) {

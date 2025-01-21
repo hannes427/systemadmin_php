@@ -42,33 +42,19 @@ var city = <?php echo "\"$local_tz[1]\"\n"; ?>
 <div class="row">
 			<div class="col-sm-9">
 	<form method="post" class="fpbx-submit" id="tzform">
-
-
-
-
-
-
   <div class="fpbx-container">
 										<div class="display full-border">
 						<div class='container-fluid'>
-
-
-
-
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
 		<p>
-			Warning: Please reboot the system to take effect the changes!</p>
+			<?php echo _("Warning: Please reboot the system to take effect the changes!");?></p>
 			</div></div></div>
-
-
-
-
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">Time Zone: </div>
+			<div class="col-md-3"><?php echo _("Time Zone");?>: </div>
   <div class='col-md-4'><select name="region" id="region">
     <option value="" selected="selected">Select region</option>
   </select>

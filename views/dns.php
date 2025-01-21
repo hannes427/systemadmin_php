@@ -156,7 +156,7 @@ foreach($interfaces AS $interface) {
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">DNS server</div>
+			<div class="col-md-3"><?php echo _("DNS server");?></div>
   <div class='col-md-4'><textarea id="dns_server" name="dns_server" rows="5" cols="31" class="form-control"><?php
   $k = 1;
   $len2 = count($nameservers);
@@ -172,7 +172,7 @@ foreach($interfaces AS $interface) {
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">DNS search list</div>
+			<div class="col-md-3"><?php echo _("DNS search list");?></div>
    <div class='col-md-4'><textarea id="dns_search" name="dns_search" rows="5" cols="31" class="form-control"><?php
   $l = 1;
   $len3 = count($search);

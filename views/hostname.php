@@ -50,26 +50,26 @@ if(isset($_POST['set_hostname']) && $_POST['set_hostname'] == "true") {
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">Current Hostname</div>
+			<div class="col-md-3"><?php echo _("Current Hostname");?></div>
   <div class='col-md-4'><input type="text" class="form-control disabled" id="current_hostname" name="current_hostname" value="<?php echo $current_hostname[0]; ?>" disabled=""></div>
   </div></div></div>
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">New Hostname</div>
+			<div class="col-md-3"><?php echo _("New Hostname");?></div>
   <div class='col-md-4'><input type="text" class="form-control" id="new_hostname" name="new_hostname"></div>
   </div></div></div>
   <br><br>
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">Current Domainname</div>
+			<div class="col-md-3"><?php echo _("Current Domainname");?></div>
   <div class='col-md-4'><input type="text" class="form-control disabled" id="current_domainname" name="current_domainname" value="<?php echo $current_domainname[0]; ?>" disabled=""></div>
   </div></div></div>
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">New Domainname</div>
+			<div class="col-md-3"><?php echo _("New Domainname");?></div>
   <div class='col-md-4'><input type="text" class="form-control" id="new_domainname" name="new_domainname"></div>
   </div></div></div>
   <input type="hidden" name="set_hostname" value="true">

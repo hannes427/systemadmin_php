@@ -6,7 +6,7 @@ if (count($captures) == 0) {
 else {
     ?>
     <table id="captures" class="table table-striped table-bordered table-hover">
-			<thead style=""><tr><th class="bs-checkbox " style="width: 36px; " data-field="0"><div class="th-inner "><label><input name="btSelectAll" type="checkbox"><span></span></label></div><div class="fht-cell"></div></th><th style="" data-field="name"><div class="th-inner ">Capture date</div><div class="fht-cell"></div></th><th class="col_actions" style="" data-field="id"><div class="th-inner ">Actions</div><div class="fht-cell"></div></th></tr></thead><tbody>
+			<thead style=""><tr><th class="bs-checkbox " style="width: 36px; " data-field="0"><div class="th-inner "><label><input name="btSelectAll" type="checkbox"><span></span></label></div><div class="fht-cell"></div></th><th style="" data-field="name"><div class="th-inner "><?php echo _("Capture date");?></div><div class="fht-cell"></div></th><th class="col_actions" style="" data-field="id"><div class="th-inner "><?php echo _("Actions");?></div><div class="fht-cell"></div></th></tr></thead><tbody>
 			<?php
 			$i = 1;
 			foreach($captures AS $capture) {

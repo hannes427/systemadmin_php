@@ -8,25 +8,65 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-07 13:50+0100\n"
+"POT-Creation-Date: 2025-01-21 15:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: about.php:39
+msgid "Operating System"
+msgstr ""
+
+#: about.php:43
+msgid "System uptime"
+msgstr ""
+
+#: about.php:46
+msgid "days"
+msgstr ""
+
+#: about.php:49
+msgid "hours"
+msgstr ""
+
+#: about.php:52
+msgid "minutes"
+msgstr ""
+
+#: about.php:57
+msgid "PBX Version"
+msgstr ""
+
+#: about.php:61
+msgid "Asterisk Version"
+msgstr ""
+
+#: about.php:65
+msgid "System name"
+msgstr ""
+
+#: dns.php:159
+msgid "DNS server"
+msgstr ""
+
+#: dns.php:175
+msgid "DNS search list"
+msgstr ""
 
 #: email.php:163
 msgid "Send e-mail via"
-msgstr "E-Mail senden via"
+msgstr ""
 
 #: email.php:164
 msgid "Local"
-msgstr "Diesen Server"
+msgstr ""
 
 #: email.php:165 email.php:226
-msgid "Entfernten Server"
+msgid "Remote server"
 msgstr ""
 
 #: email.php:174
@@ -43,28 +83,164 @@ msgstr ""
 
 #: email.php:239
 msgid "Use Authentication"
-msgstr "Authentifizierung benutzen"
+msgstr ""
 
 #: email.php:240 email.php:284
 msgid "Yes"
-msgstr "Ja"
+msgstr ""
 
 #: email.php:241 email.php:285
 msgid "No"
-msgstr "Nein"
+msgstr ""
 
 #: email.php:250
 msgid "Username"
-msgstr "Benutzername"
+msgstr ""
 
 #: email.php:267
 msgid "Password"
-msgstr "Passwort"
+msgstr ""
 
 #: email.php:283
 msgid "Use TLS encrytion"
-msgstr "Verschl&uuml;elung benutzen"
+msgstr ""
 
 #: email.php:294
 msgid "TLS Port"
-msgstr "TLS Port"
+msgstr ""
+
+#: hostname.php:53
+msgid "Current Hostname"
+msgstr ""
+
+#: hostname.php:59
+msgid "New Hostname"
+msgstr ""
+
+#: hostname.php:66
+msgid "Current Domainname"
+msgstr ""
+
+#: hostname.php:72
+msgid "New Domainname"
+msgstr ""
+
+#: notifications.php:35
+msgid "Sender e-mail address"
+msgstr ""
+
+#: notifications.php:47
+msgid "Storage e-mail address"
+msgstr ""
+
+#: packetcapture.php:28
+msgid "Start new Capture"
+msgstr ""
+
+#: packetcapture.php:31
+msgid "Jobs"
+msgstr ""
+
+#: power.php:37
+msgid "Reboot System"
+msgstr ""
+
+#: power.php:43
+msgid "Power Off System"
+msgstr ""
+
+#: rnav.php:3
+msgid "DNS"
+msgstr ""
+
+#: rnav.php:4
+msgid "Timezone"
+msgstr ""
+
+#: rnav.php:5
+msgid "Hostname"
+msgstr ""
+
+#: rnav.php:6
+msgid "Network Config"
+msgstr ""
+
+#: rnav.php:7
+msgid "Notifications Config"
+msgstr ""
+
+#: rnav.php:8
+msgid "e-mail Configuration"
+msgstr ""
+
+#: rnav.php:9
+msgid "Power management"
+msgstr ""
+
+#: rnav.php:10
+msgid "Packet Capture"
+msgstr ""
+
+#: timezone.php:52
+msgid "Warning: Please reboot the system to take effect the changes!"
+msgstr ""
+
+#: timezone.php:57
+msgid "Time Zone"
+msgstr ""
+
+#: view.jobs.php:4
+msgid "No Captures found. Please start a capture first"
+msgstr ""
+
+#: view.jobs.php:9
+msgid "Capture date"
+msgstr ""
+
+#: view.jobs.php:9
+msgid "Actions"
+msgstr ""
+
+#: view.startcapture.php:103
+msgid "Listen on interface"
+msgstr ""
+
+#: view.startcapture.php:114
+msgid "IP version"
+msgstr ""
+
+#: view.startcapture.php:116 view.startcapture.php:126
+msgid "All"
+msgstr ""
+
+#: view.startcapture.php:117
+msgid "IPv4"
+msgstr ""
+
+#: view.startcapture.php:118
+msgid "IPv6"
+msgstr ""
+
+#: view.startcapture.php:124
+msgid "Protocol"
+msgstr ""
+
+#: view.startcapture.php:136
+msgid "Host"
+msgstr ""
+
+#: view.startcapture.php:142
+msgid "Port"
+msgstr ""
+
+#: view.startcapture.php:149
+msgid "Max file size"
+msgstr ""
+
+#: view.startcapture.php:155
+msgid "Max file count"
+msgstr ""
+
+#: view.startcapture.php:161
+msgid "Packet Count"
+msgstr ""

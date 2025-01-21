@@ -100,7 +100,7 @@ ksort($interfaces);
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3"> Listen on interface</div>
+			<div class="col-md-3"><?php echo _("Listen on interface");?></div>
   <div class="col-md-9"><select name="interface" id="interface" class="form-control"><option value="all" selected="selected">All</option>
   <?php
   foreach($interfaces AS $interface) {
@@ -108,69 +108,57 @@ ksort($interfaces);
   }
   ?></select></div>
   </div></div></div>
-
-
-
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">IP version</div>
+			<div class="col-md-3"><?php echo _("IP version");?></div>
   <div class="col-md-9"><select name="ip_version" id="ip_version" class="form-control">
-  <option value="all" selected="selected">All</option>
-  <option value="ip">IPv4</option>
-  <option value="ip6">IPv6</option>
+  <option value="all" selected="selected"><?php echo _("All");?></option>
+  <option value="ip"><?php echo _("IPv4");?></option>
+  <option value="ip6"><?php echo _("IPv6");?></option>
   </select></div>
   </div></div></div>
-
-
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">Protocol</div>
+			<div class="col-md-3"><?php echo _("Protocol");?></div>
   <div class="col-md-9"><select name="protocol" id="protocol" class="form-control">
-  <option value="all" selected="selected">All</option>
+  <option value="all" selected="selected"><?php echo _("All");?></option>
   <option value="tcp">TCP</option>
   <option value="udp">UDP</option>
   <option value="icmp">ICMP</option>
   <option value="arp">ARP</option>
   </select></div>
   </div></div></div>
-
-
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">Host</div>
+			<div class="col-md-3"><?php echo _("Host");?></div>
   <div class="col-md-9"><input type="text" id="host_address" name="host_address" class="form-control"></div>
   </div></div></div>
-
-
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">Port</div>
+			<div class="col-md-3"><?php echo _("Port");?></div>
   <div class="col-md-9"><input type="text" id="port" name="port" class="form-control"></div>
   </div></div></div>
 
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">Max file size</div>
+			<div class="col-md-3"><?php echo _("Max file size");?></div>
   <div class="col-md-9"><input type="text" id="maxsize" name="maxsize" class="form-control"></div>
   </div></div></div>
-
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">Max file count</div>
+			<div class="col-md-3"><?php echo _("Max file count");?></div>
   <div class="col-md-9"><input type="text" id="maxfilecount" name="maxfilecount" class="form-control"></div>
   </div></div></div>
-
-
   <div class="element-container">
 	<div class="">
 		<div class="row form-group">
-			<div class="col-md-3">Packet Count</div>
+			<div class="col-md-3"><?php echo _("Packet Count");?></div>
   <div class="col-md-9"><input type="text" id="count" name="count" class="form-control"></div>
   </div></div></div>
   </div>
