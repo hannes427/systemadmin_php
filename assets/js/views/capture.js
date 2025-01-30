@@ -1,22 +1,4 @@
 $(document)
-.on('click', '#localdownload', function(e) {
-    e.preventDefault(); //stop submit
-    var id = ($(this).attr('name'));
-    var req = {
-        module: 'systemadmin',
-        command: 'localdownload',
-        id: id,
-    };
-    $.ajax({
-        url: FreePBX.ajaxurl,
-        data: req,
-        success: function(data) {
-            return true;
-}
-})
-});
-
-$(document)
 .on('click', '#localdelete', function(e) {
     e.preventDefault(); //stop submit
     var id = ($(this).attr('name'));
@@ -29,7 +11,7 @@ $(document)
         url: FreePBX.ajaxurl,
         data: req,
         success: function(data) {
-            return true;
+            window.location.href = '/admin/config.php?display=systemadmin&view=packetcapture&tab=jobs';
 }
 })
 });
@@ -47,7 +29,7 @@ $(document)
         url: FreePBX.ajaxurl,
         data: req,
         success: function(data) {
-            return true;
+            window.location.href = '/admin/config.php?display=systemadmin&view=packetcapture&tab=jobs';
 }
 })
 });

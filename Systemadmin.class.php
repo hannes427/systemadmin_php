@@ -37,10 +37,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 		$this->deleteDirectory("$spooldir/packetcapture");
 	}
 
-	public function backup() {}
-	//not yet implimented
-	public function restore($backup) {}
-	//process form802.11
+
 	public function doConfigPageInit($page) {}
 
 	public function chownFreepbx () {
@@ -623,7 +620,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 		}
 	}
 
-	public function FetchPacketCaptureById($id) {
+	private function FetchPacketCaptureById($id) {
 		$packetcapture = array();
 		$sql = "SELECT date FROM systemadmin_packetcapture WHERE id = '$id'";
 		$stmt = $this->db->prepare($sql);
@@ -632,7 +629,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 		return $packetcapture;
 	}
 
-	public function getCapturePath ($id) {
+	private function getCapturePath ($id) {
 		$data = $this->FetchPacketCaptureById($id);
 		$date = explode(" ", $data['date']);
 		$temp = explode("-", $date[0]);
@@ -647,7 +644,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 		return $capture;
 	}
 
-	public function getCapturePid($id) {
+	private function getCapturePid($id) {
 		$pid = -1;
 		$capture = $this->getCapturePath($id);
 		exec("/usr/bin/ps -ef | /usr/bin/grep $capture | /usr/bin/grep -v grep | /usr/bin/awk -F' ' {'print $2'}", $pid_output, $rc);
@@ -657,7 +654,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 		return $pid;
 	}
 
-	public function preparecapturedownload($id) {
+	private function preparecapturedownload($id) {
 		$capture = $this->getCapturePath($id);
 		$dirname = basename($capture);
 		$tar = new Tar();
