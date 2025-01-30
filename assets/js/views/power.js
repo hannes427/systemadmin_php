@@ -17,7 +17,7 @@ $(document)
     var req = {
 			module: 'systemadmin',
 			command: 'powermgmt',
-			action: 'reboot',
+			action: 'poweroff',
 		};
 
         $.ajax({
@@ -36,6 +36,41 @@ $(document)
 }
 });
 }});
+
+
+
+
+
+
+$(document)
+.on('click', '#reboot', function(e) {
+    if (!confirm('Are you shure to reboot the system? Active calls will be terminated and no new calls will be processed during reboot!')) {
+        e.preventDefault(); //stop submit
+    }
+ else {
+    var req = {
+			module: 'systemadmin',
+			command: 'powermgmt',
+			action: 'reboot',
+		};
+        $.ajax({
+            type: "POST",
+			url: FreePBX.ajaxurl,
+			data: req,
+			success: function(data) {
+}
+});
+}});
+
+
+
+
+
+
+
+
+
+
 /*$(document)
 .on('click', '#reboot', function(e) {
     if (!confirm('Are you shure to reboot the system? Active calls will be terminated and no new calls will be processed during reboot!')) {
