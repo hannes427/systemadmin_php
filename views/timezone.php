@@ -13,7 +13,7 @@ foreach($timezone_identifiers AS $timezone) {
 if(isset($_POST['set_timezone']) && $_POST['set_timezone'] == "true") {
   $new_timezone = $_POST['region'].'/'.$_POST['city'];
   if(in_array($new_timezone, $timezone_identifiers)) {
-    exec("/usr/local/freepbx/set_timezone --time-zone $new_timezone", $output_setTZ);
+    exec("/usr/local/freepbx/bin/set_timezone --time-zone $new_timezone", $output_setTZ);
   }
 }
 exec("timedatectl status | grep zone | sed -e 's/^[ ]*Time zone: \\(.*\\) (.*)$/\\1/g'", $output);

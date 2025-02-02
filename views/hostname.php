@@ -25,7 +25,7 @@ if(isset($_POST['set_hostname']) && $_POST['set_hostname'] == "true") {
     }
   }
   if (!$err_hostname || !$err_domainname) {
-    exec("/usr/local/freepbx/hostname $arguments", $output);
+    exec("/usr/local/freepbx/bin/set_hostname $arguments", $output);
     if (isset($_POST['new_hostname']) && $_POST['new_hostname'] != "" && $_POST['new_hostname'] != $current_hostname[0]) {
       $current_hostname[0] = $_POST['new_hostname'];
     }

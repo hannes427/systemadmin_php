@@ -9,7 +9,7 @@ if(isset($_POST['power']) && $_POST['power'] == "true") {
     }
 
     if ($argument != "") {
-        exec("sleep 20 && /usr/local/freepbx/bin/powermgmt $argument 2>&1 &", $output, $rc);
+        exec("/usr/local/freepbx/bin/powermgmt $argument 2>&1 &", $output, $rc);
         if ($rc != 0) {
             $err_msg = "";
             foreach($output AS $line) {
@@ -48,4 +48,29 @@ if(isset($_POST['power']) && $_POST['power'] == "true") {
 </div>
 <input type="hidden" name="power" value="true">
 </form>
+</div>
+
+<div class='modal fade' id='rebootmodal'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+       <h3 class="mr-auto">Reboot system</h3>
+      </div>
+      <div class='modal-body'>
+       Your system is rebooting now. Please wait at least 3 minutes to refresh this page...
+      </div>
+    </div>
+  </div>
+</div>
+<div class='modal fade' id='shutdownmodal'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+       <h3 class="mr-auto">Shutdown system</h3>
+      </div>
+      <div class='modal-body'>
+       This system is shutting down. You can close this windows.
+      </div>
+    </div>
+  </div>
 </div>

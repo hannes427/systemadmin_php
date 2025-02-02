@@ -8,6 +8,7 @@
 <a class="list-group-item" href="config.php?display=systemadmin&view=email"><?php echo _("e-mail Configuration");?></a>
 <a class="list-group-item" href="config.php?display=systemadmin&view=power"><?php echo _("Power management");?></a>
 <a class="list-group-item" href="config.php?display=systemadmin&view=packetcapture"><?php echo _("Packet Capture");?></a>
+<a class="list-group-item" href="config.php?display=systemadmin&view=storage"><?php echo _("Storage");?></a>
 </div>
 </div>
 </div>

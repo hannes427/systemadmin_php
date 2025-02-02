@@ -44,4 +44,15 @@ function systemadminFetchPacketCaptures() {
 	return $packetcapture;
 }
 
+function systemadminFetchStorageConfig() {
+	$storageconfig = array();
+	$dbh = \FreePBX::Database();
+    $sql = 'SELECT value FROM systemadmin_settings WHERE `key` = \'storage_settings\'';
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+    if ($result = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+		$storageconfig = json_decode($result['value'], true);
+	}
+	return $storageconfig;
+}
 ?>

@@ -8,7 +8,7 @@ if(isset($_POST['set_notifications']) && $_POST['set_notifications'] == "true") 
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
     $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-    exec("/usr/local/freepbx/notifications --from-address \"$from_address\" --storage-address \"$storage_address\" 2>&1", $output, $rc);
+    exec("/usr/local/freepbx/bin/notifications --from-address \"$from_address\" --storage-address \"$storage_address\" 2>&1", $output, $rc);
     if ($rc != 0) {
       $err_msg = "";
       foreach($output AS $line) {
