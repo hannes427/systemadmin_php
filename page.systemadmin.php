@@ -1,6 +1,6 @@
 <?php
 if (!empty($_REQUEST['view'])) {
-		$view = $_REQUEST['view'];
+		$view = basename($_REQUEST['view']);
 	} else {
 		$view = "about";
 	}
