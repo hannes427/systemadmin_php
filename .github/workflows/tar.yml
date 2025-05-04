@@ -1,0 +1,19 @@
+name: create tar 
+on:
+  push:
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Create archive
+        run: tar -czf install/systemadmin.tar.gz -X .github/excludeList.txt --transform 's,^,systemadmin/,' *
+      - name: Upload archive
+        run: |
+          git config --global user.email tar-create@systemadmin-oss
+          git config --global user.name "Bot-hannes427"
+          git add .
+          git commit -m "Updating systemadmin.tar.gz"
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
