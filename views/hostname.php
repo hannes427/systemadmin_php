@@ -64,7 +64,7 @@ if(isset($_POST['set_hostname']) && $_POST['set_hostname'] == "true") {
 	<div class="">
 		<div class="row form-group">
 			<div class="col-md-3"><?php echo _("Current Domainname");?></div>
-  <div class='col-md-4'><input type="text" class="form-control disabled" id="current_domainname" name="current_domainname" value="<?php echo $current_domainname[0]; ?>" disabled=""></div>
+  <div class='col-md-4'><input type="text" class="form-control disabled" id="current_domainname" name="current_domainname" value="<?php echo $current_domainname[0] ?? ''; ?>" disabled=""></div>
   </div></div></div>
   <div class="element-container">
 	<div class="">
