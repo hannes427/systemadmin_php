@@ -53,7 +53,6 @@ if(isset($_POST['set_email']) && $_POST['set_email'] == "true") {
             throw new \Exception("Can't update email config: $err_msg");
         }
     }
-    print_r($_POST);
 }
 $emailconfig = systemadminFetchEmailConfig();
 $myhostname = "";
