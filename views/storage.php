@@ -88,7 +88,7 @@ if ($output_disks_rc == 0) {
         $i++;
     }
 }
-if ($handle = opendir('/dev/md/')) {
+if (is_dir('/dev/md/') && $handle = opendir('/dev/md/')) {
     while (false !== ($file = readdir($handle))) {
         $output_raid = "";
         $output_raid_rc = "";
