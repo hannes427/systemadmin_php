@@ -11,8 +11,13 @@ foreach($timezone_identifiers AS $timezone) {
     }
 }
 if(isset($_POST['set_timezone']) && $_POST['set_timezone'] == "true") {
-  $new_timezone = $_POST['region'].'/'.$_POST['city'];
-  if(in_array($new_timezone, $timezone_identifiers)) {
+  if($_POST['region'] == "UTC") {
+          $new_timezone = "Etc/UTC";
+  }
+  else {
+        $new_timezone = $_POST['region'].'/'.$_POST['city'];
+  }
+  if(in_array($new_timezone, $timezone_identifiers) || $new_timezone == "Etc/UTC") {
     exec("/usr/local/freepbx/bin/set_timezone --time-zone $new_timezone", $output_setTZ);
   }
 }
@@ -32,7 +37,13 @@ foreach($timezones AS $key => $value) {
 }
 ?>
 }
-var region = <?php echo "\"$local_tz[0]\"\n"; ?>
+var region = <?php if($local_tz[0] == "Etc") {
+        echo "\"UTC\"\n";
+        }
+else {
+        echo "\"$local_tz[0]\"\n";
+}
+?>
 var city = <?php echo "\"$local_tz[1]\"\n"; ?>
 </script>
 <script src="modules/systemadmin/assets/js/views/timezone.js"></script>
