@@ -6,7 +6,7 @@
   <publisher>Generated Module</publisher>
   <license>AGPLv3</license>
   <changelog>
-    *17.0.2alpha Fixed error in storage.php and timezone.php
+    *17.0.2alpha* Fixed error in storage.php and timezone.php
     *17.0.1* Initial release
   </changelog>
   <category>Admin</category>
