@@ -2,10 +2,13 @@
 <module>
   <rawname>systemadmin</rawname>
   <name>Systemadmin</name>
-  <version>17.0.1</version>
+  <version>17.0.2</version>
   <publisher>Generated Module</publisher>
   <license>AGPLv3</license>
-  <changelog>*17.0.1* Initial release</changelog>
+  <changelog>
+    *17.0.2alpha Fixed error in storage.php and timezone.php
+    *17.0.1* Initial release
+  </changelog>
   <category>Admin</category>
   <description>OSS SystemAdmin</description>
   <menuitems>
