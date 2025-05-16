@@ -1,13 +1,14 @@
 <?php
-$timezone_identifiers = DateTimeZone::listIdentifiers();
+exec("/usr/bin/timedatectl list-timezones --no-pager", $output_list_timezones);
 $timezones = array();
-foreach($timezone_identifiers AS $timezone) {
-	$timezone = explode("/", $timezone);
+foreach($output_list_timezones AS $timezone) {
+
+        $timezone = explode("/", $timezone);
     if($timezone[0] == "UTC") {
       $timezones[$timezone[0]][] = "UTC";
     }
     else {
-      $timezones[$timezone[0]][] = $timezone[1];
+      $timezones[$timezone[0]][] = isset($timezone[1]) ? $timezone[1] : '';
     }
 }
 if(isset($_POST['set_timezone']) && $_POST['set_timezone'] == "true") {
@@ -17,7 +18,7 @@ if(isset($_POST['set_timezone']) && $_POST['set_timezone'] == "true") {
   else {
         $new_timezone = $_POST['region'].'/'.$_POST['city'];
   }
-  if(in_array($new_timezone, $timezone_identifiers) || $new_timezone == "Etc/UTC") {
+  if(in_array($new_timezone, $output_list_timezones) || $new_timezone == "Etc/UTC") {
     exec("/usr/local/freepbx/bin/set_timezone --time-zone $new_timezone", $output_setTZ);
   }
 }
