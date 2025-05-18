@@ -23,13 +23,28 @@ if(isset($_POST['set_email']) && $_POST['set_email'] == "true") {
      if ($smtp_use_tls == "yes" && ($port == "" || !preg_match("/^\d+$/", $port))) {
         $error = true;
     }
+    if ($smtp_use_tls == "yes" && !is_numeric($port)) {
+            $error = true;
+            echo "Port falsch<br>";
+    }
     if ($setup == "remote") {
         if ($smtp_sasl_auth_enable == "yes" && ($username == "" || $password == "")) {
             $error = true;
         }
-        else if ($relayhost == ""  || (!preg_match("/^[a-z0-9]+[a-z0-9-\._]+\.[a-z]{2,}$/", $relayhost) && !filter_var($relayhost, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && !filter_var($relayhost, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
+        else if ($relayhost == ""  || (!preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9]$/", $relayhost) && !filter_var($relayhost, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && !filter_var($relayhost, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
             $error = true;
             echo "<br><br>nein...<br><br>";
+        }
+    }
+    else {
+        if (!preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9]$/", $myhostname)) {
+            $error = true;
+        }
+        if (!preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9]$/", $mydomain)) {
+            $error = true;
+        }
+        if (!preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9]$/", $myorigin)) {
+            $error = true;
         }
     }
     if(!$error) {
@@ -76,6 +91,9 @@ else {
 }
 if ($emailconfig['setup'] == "" || $emailconfig['setup'] == "local") {
     $display_local = 'style = "display: inline;"';
+}
+else {
+    $display_remote = 'style = "display: inline;"';
 }
 exec("/usr/sbin/postconf -px myhostname 2>&1", $hostname_output, $hostname_rc);
 if ($hostname_rc == 0) {
