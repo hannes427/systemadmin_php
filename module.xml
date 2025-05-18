@@ -2,10 +2,11 @@
 <module>
   <rawname>systemadmin</rawname>
   <name>Systemadmin</name>
-  <version>17.0.2</version>
+  <version>17.0.3alpha</version>
   <publisher>Generated Module</publisher>
   <license>AGPLv3</license>
   <changelog>
+    *17.0.3alpha* Fixed display error in email.php and added input vallidation for local email setup
     *17.0.2alpha* Fixed error in storage.php and timezone.php
     *17.0.1* Initial release
   </changelog>
@@ -22,7 +23,6 @@
   </hooks>
   <depends>
     <file>/usr/local/freepbx</file>
-    <version>17.0.1</version>
   </depends>
   <database>
     <table name="systemadmin_settings">
