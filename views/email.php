@@ -25,7 +25,6 @@ if(isset($_POST['set_email']) && $_POST['set_email'] == "true") {
     }
     if ($smtp_use_tls == "yes" && !is_numeric($port)) {
             $error = true;
-            echo "Port falsch<br>";
     }
     if ($setup == "remote") {
         if ($smtp_sasl_auth_enable == "yes" && ($username == "" || $password == "")) {
@@ -33,7 +32,6 @@ if(isset($_POST['set_email']) && $_POST['set_email'] == "true") {
         }
         else if ($relayhost == ""  || (!preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\.]*[a-zA-Z0-9]$/", $relayhost) && !filter_var($relayhost, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && !filter_var($relayhost, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
             $error = true;
-            echo "<br><br>nein...<br><br>";
         }
     }
     else {
