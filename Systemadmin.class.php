@@ -75,12 +75,45 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 		$this->FreePBX->Job()->remove("systemadmin", "sendStorageNotifications");
 	}
 
+	/*
+	 * Write log-entry to systemadmin_logs and return mysql_insert_id
+	 * Needed to prevent unprivileged users with shell access to call our setuid-binaries directly
+	 * @param module-name
+	 * @return id of the inserted entry
+	 */
+	public function write_log($module = '') {
+		if ($module == '') {
+			//module should not be empty
+			return -1;
+		}
+		$id = 0;
+		$module = preg_replace('/[^a-z]*/', '', $module);
+		$username = (isset($_SESSION['AMP_user']->username) ? $_SESSION['AMP_user']->username : 'unknown');
+		$timestamp = time();
+		$sql = "INSERT INTO systemadmin_logs(username, module, timestamp) VALUES('$username', '$module', '$timestamp')";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$id = $this->db->lastInsertId();
+		return $id;
+	}
+
+	public function delete_log($id = 0) {
+		if ($id == 0) {
+			return false;
+		}
+		$id = preg_replace('/[^0-9]*/', '', $id);
+		$sql = "DELETE FROM systemadmin_logs WHERE id='$id'";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		return true;
+	}
+
 	//get all network interfaces
 	public function getInterfaces() {
 		$interfaces = array();
 		if ($handle = opendir('/sys/class/net/')) {
 				while (false !== ($file = readdir($handle))) {
-					if ($file == '.' || $file == '..' || $file == 'lo') {
+					if ($file == '.' || $file == '..' || $file == 'lo' || $file == 'bonding_masters') {
 						continue;
 					}
 					$interfaces[$file]['name'] = $file;
