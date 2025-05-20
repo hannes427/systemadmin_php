@@ -128,6 +128,23 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 					$interfaces[$file]['ipv6_autoconf'] = '0'; //0 = off, 1 = on
 					$interfaces[$file]['dyn_ipv4_address'] = "";
 					$interfaces[$file]['dyn_ipv6_address'] = "";
+					$interfaces[$file]['bonding_status'] = 'none';
+					$interfaces[$file]['bonding_master'] = '';
+					$interfaces[$file]['bond_member'] = array();
+					$interfaces[$file]['bond_parameter'] = array();
+					if (is_dir('/proc/net/bonding')) {
+						exec("/usr/bin/grep -rl $file /proc/net/bonding", $output_is_bonding_slave, $rc_is_bonding_slave);
+						if($rc_is_bonding_slave == 0) {
+						   $interfaces[$file]['bonding_status'] = 'slave';
+						   $interfaces[$file]['bonding_master'] = basename($output_is_bonding_slave[0]);
+						}
+					}
+					if (file_exists('/sys/class/net/bonding_masters')) {
+						exec("/usr/bin/grep -q $file /sys/class/net/bonding_masters", $output_is_bonding_master, $rc_is_bonding_master);
+						if ($rc_is_bonding_master == 0) {
+							$interfaces[$file]['bonding_status'] = 'master';
+						}
+					}
 				}
 				return $interfaces;
 			}
@@ -471,9 +488,19 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function get_netplan_config ($interface) {
+		/*if ($interface['bonding_status'] == "slave") {
+			return;
+		}*/
+
 		//Netplan configuration files are only accessible by root. We need to fetch them by a program which has setuid-bit enabled
 		// the 2>&1 at the end of the next line is required to catch any error messages
-		exec("/usr/local/freepbx/bin/get_netplan_config --interface $interface[name] 2>&1", $temp_interface, $rc);
+		if ($interface['bonding_status'] == "none") {
+			$type = "ethernets";
+		}
+		else {
+			$type = "bonds";
+		}
+		exec("/usr/local/freepbx/bin/get_netplan_config --interface $interface[name] --type $type 2>&1", $temp_interface, $rc);
 		if ($rc != 0) {
 			$err_msg = "";
 			foreach($temp_interface AS $line) {
@@ -483,7 +510,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 		}
 		else {
 			//Check if interface is unconfigured
-			exec("/usr/local/freepbx/bin/get_netplan_config --interface $interface[name] --check_configured 2>&1", $output, $rc_check);
+			exec("/usr/local/freepbx/bin/get_netplan_config --interface $interface[name] --type $type --check_configured 2>&1", $output, $rc_check);
 			if ($rc_check != 0) {
 				$err_msg = "";
 				foreach($temp_interface AS $line) {
@@ -539,6 +566,75 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 					}
 					else {
 						$interface['ipv6_accept_ra'] = 1;
+					}
+				}
+				else if (preg_match("/interfaces:\s(.*)/i", $line, $matches)) {
+					$interface['bond_member'][] = explode(', ', $matches[1]);
+				}
+				else if (preg_match("/parameters:\s(.*)/i", $line, $matches)) {
+					$parameters = explode(', ', $matches[1]);
+					foreach($parameters AS $parameter) {
+						$param = explode(':', $parameter);
+						if ($param[0] == 'mode') {
+							$interface['bond_parameter']['mode'] = $param[1];
+						}
+						elseif ($param[0] == 'lacp-rate') {
+							$interface['bond_parameter']['lacp-rate'] = $param[1];
+						}
+						elseif ($param[0] == 'mii-monitor-interval') {
+							$interface['bond_parameter']['mii-monitor-interval'] = $param[1];
+						}
+						elseif ($param[0] == 'min-links') {
+							$interface['bond_parameter']['min-links'] = $param[1];
+						}
+						elseif ($param[0] == 'transmit-hash-policy') {
+							$interface['bond_parameter']['transmit-hash-policy'] = $param[1];
+						}
+						elseif ($param[0] == 'ad-select') {
+							$interface['bond_parameter']['ad-select'] = $param[1];
+						}
+						elseif ($param[0] == 'all-members-active') {
+							$interface['bond_parameter']['all-members-active'] = $param[1];
+						}
+						elseif ($param[0] == 'arp-interval') {
+							$interface['bond_parameter']['arp-interval'] = $param[1];
+						}
+						elseif ($param[0] == 'arp-ip-targets') {
+							$interface['bond_parameter']['arp-ip-targets'] = $param[1];
+						}
+						elseif ($param[0] == 'arp-validate') {
+							$interface['bond_parameter']['arp-validate'] = $param[1];
+						}
+						elseif ($param[0] == 'arp-all-targets') {
+							$interface['bond_parameter']['arp-all-targets'] = $param[1];
+						}
+						elseif ($param[0] == 'up-delay') {
+							$interface['bond_parameter']['up-delay'] = $param[1];
+						}
+						elseif ($param[0] == 'down-delay') {
+							$interface['bond_parameter']['down-delay'] = $param[1];
+						}
+						elseif ($param[0] == 'fail-over-mac-policy') {
+							$interface['bond_parameter']['fail-over-mac-policy'] = $param[1];
+						}
+						elseif ($param[0] == 'gratuitous-arp') {
+							$interface['bond_parameter']['gratuitous-arp'] = $param[1];
+						}
+						elseif ($param[0] == 'packets-per-member') {
+							$interface['bond_parameter']['packets-per-member'] = $param[1];
+						}
+						elseif ($param[0] == 'primary-reselect-policy') {
+							$interface['bond_parameter']['primary-reselect-policy'] = $param[1];
+						}
+						elseif ($param[0] == 'resend-igmp') {
+							$interface['bond_parameter']['resend-igmp'] = $param[1];
+						}
+						elseif ($param[0] == 'learn-packet-interval') {
+							$interface['bond_parameter']['learn-packet-interval'] = $param[1];
+						}
+						elseif ($param[0] == 'primary') {
+							$interface['bond_parameter']['primary'] = $param[1];
+						}
 					}
 				}
 			}

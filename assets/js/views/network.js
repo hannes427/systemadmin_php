@@ -1,65 +1,130 @@
 function fetch_config(iface) {
     let result = interface.filter(x=> x.name == iface);
     $.each(result, function(key, val){
-         if (val.ipv4_assignment == "static") {
-             console.log(iface + " Static");
-            $("#ipv4_assignment-static").click();
-            $(".ipv4_disabled").prop('disabled', false);
-            $("#ipv4_address").val(val.ipv4_address);
-        }
-        else if (val.ipv4_assignment == "dhcp") {
-             console.log(iface + " dhcp");
-            $("#ipv4_assignment-dhcp").click();
-            $(".ipv4_disabled").prop('disabled', true);
-            $("#ipv4_address").val(val.dyn_ipv4_address);
+        if (val.bonding_status == "slave") {
+            $("#bonding_warning").html("<span style='color: red;'>Since the interface "+val.name+" is a member of the bond "+val.bonding_master+", it cannot be configured directly. Please select the interface "+val.bonding_master+" to configure</span>");
+            $("form").find("input, textarea, button").prop("disabled", true);
         }
         else {
-            $("#ipv4_assignment-unconfigured").click();
-             console.log(iface + " unconfigured");
-            $(".ipv4_disabled").prop('disabled', true);
-            $("#ipv4_address").val("");
-        }
-        $("#ipv4_gateway").val(val.ipv4_gateway);
-        if (val.ipv6_assignment == "static") {
-            $("#ipv6_assignment-static").click();
-            $(".ipv6_disabled").prop('disabled', false);
-        }
-        else if (val.ipv6_assignment == "dhcp") {
-            $("#ipv6_assignment-dhcp").click();
-            $(".ipv6_disabled").prop('disabled', true);
-        }
-        else {
-            $("#ipv6_assignment-unconfigured").click();
-            $(".ipv6_disabled").prop('disabled', true);
-        }
-        document.getElementById("ipv6_address").innerHTML = "";
-        $.each(val.ipv6_address, function(k, v){
-            $("#ipv6_address").append(v.address + "&#13;&#10;");
-        });
-        var ta = $('#ipv6_address').val()
-        $("#ipv6_gateway").val(val.ipv6_gateway);
-        if (val.ipv6_autoconf == "1") {
-            $("#ipv6_autoconf_on").click();
-        }
-        else {
-            $("#ipv6_autoconf_off").click();
-        }
-        if (val.ipv6_accept_ra == "0") {
-            $("#ipv6_accept_ra_off").click();
-        }
-        else if (val.ipv6_accept_ra == "1") {
-            $("#ipv6_accept_ra_on").click();
-        }
-        else {
-            $("#ipv6_accept_ra_forwarding").click();
+            $("#bonding_warning").html("");
+            $("form").find("input, textarea, button").prop("disabled", false);
+            if (val.bonding_status == "master") {
+                $('#networkform').append('<input type="hidden" name="selected_bond" id="selected_bond" value="true">');
+                $("#bond_section").show();
+                $(".active-backup").prop("disabled", true);
+                $(".balance-alb").prop("disabled", true);
+                $(".balance-rr").prop("disabled", true);
+                $(".balance-tlb").prop("disabled", true);
+                $(".balance-xor").prop("disabled", true);
+                $(".8023ad").prop("disabled", true);
+                var mode = Object.values(val.bond_parameter.find(param => param.mode));
+                if (mode == "active-backup") {
+                    $(".active-backup").prop("disabled", false);
+                }
+                else if (mode == "balance-alb") {
+                     $(".balance-alb").prop("disabled", false);
+                }
+                 else if (mode == "balance-rr") {
+                     $(".balance-rr").prop("disabled", false);
+                }
+                 else if (mode == "balance-tlb") {
+                     $(".balance-tlb").prop("disabled", false);
+                }
+                 else if (mode == "balance-xor") {
+                     $(".balance-xor").prop("disabled", false);
+                }
+                 else if (mode == "802.3ad") {
+                     $(".8023ad").prop("disabled", false);
+                }
+            }
+            else {
+                $("#bond_section").hide();
+                $('input[type="hidden"][name="selected_bond"]').remove();
+            }
+            if (val.ipv4_assignment == "static") {
+                $("#ipv4_assignment-static").click();
+                $(".ipv4_disabled").prop('disabled', false);
+                $("#ipv4_address").val(val.ipv4_address);
+            }
+            else if (val.ipv4_assignment == "dhcp") {
+                $("#ipv4_assignment-dhcp").click();
+                $(".ipv4_disabled").prop('disabled', true);
+                $("#ipv4_address").val(val.dyn_ipv4_address);
+            }
+            else {
+                $("#ipv4_assignment-unconfigured").click();
+                $(".ipv4_disabled").prop('disabled', true);
+                $("#ipv4_address").val("");
+            }
+            $("#ipv4_gateway").val(val.ipv4_gateway);
+            if (val.ipv6_assignment == "static") {
+                $("#ipv6_assignment-static").click();
+                $(".ipv6_disabled").prop('disabled', false);
+            }
+            else if (val.ipv6_assignment == "dhcp") {
+                $("#ipv6_assignment-dhcp").click();
+                $(".ipv6_disabled").prop('disabled', true);
+            }
+            else {
+                $("#ipv6_assignment-unconfigured").click();
+                $(".ipv6_disabled").prop('disabled', true);
+            }
+            document.getElementById("ipv6_address").innerHTML = "";
+            $.each(val.ipv6_address, function(k, v){
+                $("#ipv6_address").append(v.address + "&#13;&#10;");
+            });
+            var ta = $('#ipv6_address').val()
+            $("#ipv6_gateway").val(val.ipv6_gateway);
+            if (val.ipv6_autoconf == "1") {
+                $("#ipv6_autoconf_on").click();
+            }
+            else {
+                $("#ipv6_autoconf_off").click();
+            }
+            if (val.ipv6_accept_ra == "0") {
+                $("#ipv6_accept_ra_off").click();
+            }
+            else if (val.ipv6_accept_ra == "1") {
+                $("#ipv6_accept_ra_on").click();
+            }
+            else {
+                $("#ipv6_accept_ra_forwarding").click();
+            }
         }
     });
 };
 
 $(document).on('click','#network_interface',function(){
     $("#network_interface").off("change");
-    console.log($(this).val());
     fetch_config($(this).val());
+});
+
+$(document).on('click','#bond_mode',function(){
+    $("#bond_mode").off("change");
+    $(".active-backup").prop("disabled", true);
+    $(".balance-alb").prop("disabled", true);
+    $(".balance-rr").prop("disabled", true);
+    $(".balance-tlb").prop("disabled", true);
+    $(".balance-xor").prop("disabled", true);
+    $(".8023ad").prop("disabled", true);
+    if ($(this).val() == "active-backup") {
+        $(".active-backup").prop("disabled", false);
+    }
+    else if ($(this).val() == "balance-alb") {
+        $(".balance-alb").prop("disabled", false);
+    }
+    else if ($(this).val() == "balance-rr") {
+        $(".balance-rr").prop("disabled", false);
+    }
+    else if ($(this).val() == "balance-tlb") {
+        $(".balance-tlb").prop("disabled", false);
+    }
+    else if ($(this).val() == "balance-xor") {
+        $(".balance-xor").prop("disabled", false);
+    }
+    else if ($(this).val() == "802.3ad") {
+        $(".8023ad").prop("disabled", false);
+    }
 });
 
 $(document).on('change','#ipv4_assignment-static',function(){

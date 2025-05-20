@@ -2,10 +2,11 @@
 <module>
   <rawname>systemadmin</rawname>
   <name>Systemadmin</name>
-  <version>17.0.4alpha</version>
+  <version>17.0.5alpha</version>
   <publisher>Generated Module</publisher>
   <license>AGPLv3</license>
   <changelog>
+    *17.0.5alpha* Add Bonding-support to networking
     *17.0.4alpha* Add functions write_log/delete_log and update function getinterfaces
     *17.0.3alpha* Fixed display error in email.php and added input vallidation for local email setup
     *17.0.2alpha* Fixed error in storage.php and timezone.php
