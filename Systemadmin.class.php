@@ -223,6 +223,89 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 				else if (preg_match("/accept_ra\s(.*)/i", $line, $matches)) {
 					$interface['ipv6_accept_ra'] = $matches[1];
 				}
+				else if (preg_match("/bond-slaves\s(.*)/i", $line, $matches)) {
+					$interface['bond_member'] = explode(' ', $matches[1]);
+				}
+				else if (preg_match("/bond-mode\s(.*)/i", $line, $matches)) {
+					if ($matches[1] == "balance-rr" || $matches[1] == "0") {
+						$interface['bond_parameter']['mode'] = 'balance-rr';
+					}
+					else if ($matches[1] == "active-backup" || $matches[1] == "1") {
+						$interface['bond_parameter']['mode'] = 'active-backup';
+					}
+					else if ($matches[1] == "balance-xor" || $matches[1] == "2") {
+						$interface['bond_parameter']['mode'] = 'balance-xor';
+					}
+					else if ($matches[1] == "broadcast" || $matches[1] == "3") {
+						$interface['bond_parameter']['mode'] = 'broadcast';
+					}
+					else if ($matches[1] == "802.3ad" || $matches[1] == "4") {
+						$interface['bond_parameter']['mode'] = '802.3ad';
+					}
+					else if ($matches[1] == "balance-tlbr" || $matches[1] == "5") {
+						$interface['bond_parameter']['mode'] = 'balance-tlb';
+					}
+					else if ($matches[1] == "balance-alb" || $matches[1] == "6") {
+						$interface['bond_parameter']['mode'] = 'balance-alb';
+					}
+				}
+				else if (preg_match("/bond-lacp-rate\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['lacp_rate'] = $matches[1];
+				}
+				elseif (preg_match("/bond-miimon\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['mii_monitor_interval'] = $matches[1];
+				}
+				elseif (preg_match("/bond-min-links\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['min_links'] = $matches[1];
+				}
+				elseif (preg_match("/bond-xmit-hash-policy\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['transmit_hash_policy'] = $matches[1];
+				}
+				elseif (preg_match("/bond-ad-select\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['ad_select'] = $matches[1];
+				}
+				elseif (preg_match("/bond-all-slaves-active\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['all_members_active'] = $matches[1];
+				}
+				elseif (preg_match("/bond-arp-interval\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['arp_interval'] = $matches[1];
+				}
+				elseif (preg_match("/bond-arp-ip-target\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['arp_ip_targets'] = $matches[1];
+				}
+				elseif (preg_match("/bond-arp-validate\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['arp_validate'] = $matches[1];
+				}
+				elseif (preg_match("/bond-arp-all-targets\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['arp_all_targets'] = $matches[1];
+				}
+				elseif (preg_match("/bond-updelay\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['up_delay'] = $matches[1];
+				}
+				elseif (preg_match("/bond-downdelay\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['down_delay'] = $matches[1];
+				}
+				elseif (preg_match("/fail-over-mac-policy\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['fail_over_mac_policy'] = $matches[1];
+				}
+				elseif (preg_match("/bond-num-grat-arp\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['gratuitous_arp'] = $matches[1];
+				}
+				elseif (preg_match("/bond-packets-per-slave\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['packets_per_member'] = $matches[1];
+				}
+				elseif (preg_match("/bond-primary-reselect\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['primary_reselect_policy'] = $matches[1];
+				}
+				elseif (preg_match("/bond-resend-igmp\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['resend_igmp'] = $matches[1];
+				}
+				elseif (preg_match("/bond-lp-interval\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['learn_packet_interval'] = $matches[1];
+				}
+				elseif (preg_match("/bond-primary\s(.*)/i", $line, $matches)) {
+					$interface['bond_parameter']['primary'] = $matches[1];
+				}
 			}
 			fclose($file);
 		}
@@ -294,6 +377,89 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 						else if (preg_match("/accept_ra\s(.*)/i", $line, $matches)) {
 							$interface['ipv6_accept_ra'] = $matches[1];
 						}
+						else if (preg_match("/bond-slaves\s(.*)/i", $line, $matches)) {
+							$interface['bond_member'] = explode(' ', $matches[1]);
+						}
+						else if (preg_match("/bond-mode\s(.*)/i", $line, $matches)) {
+							if ($matches[1] == "balance-rr" || $matches[1] == "0") {
+								$interface['bond_parameter']['mode'] = 'balance-rr';
+							}
+							else if ($matches[1] == "active-backup" || $matches[1] == "1") {
+								$interface['bond_parameter']['mode'] = 'active-backup';
+							}
+							else if ($matches[1] == "balance-xor" || $matches[1] == "2") {
+								$interface['bond_parameter']['mode'] = 'balance-xor';
+							}
+							else if ($matches[1] == "broadcast" || $matches[1] == "3") {
+								$interface['bond_parameter']['mode'] = 'broadcast';
+							}
+							else if ($matches[1] == "802.3ad" || $matches[1] == "4") {
+								$interface['bond_parameter']['mode'] = '802.3ad';
+							}
+							else if ($matches[1] == "balance-tlbr" || $matches[1] == "5") {
+								$interface['bond_parameter']['mode'] = 'balance-tlb';
+							}
+							else if ($matches[1] == "balance-alb" || $matches[1] == "6") {
+								$interface['bond_parameter']['mode'] = 'balance-alb';
+							}
+						}
+						else if (preg_match("/bond-lacp-rate\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['lacp_rate'] = $matches[1];
+						}
+						elseif (preg_match("/bond-miimon\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['mii_monitor_interval'] = $matches[1];
+						}
+						elseif (preg_match("/bond-min-links\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['min_links'] = $matches[1];
+						}
+						elseif (preg_match("/bond-xmit-hash-policy\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['transmit_hash_policy'] = $matches[1];
+						}
+						elseif (preg_match("/bond-ad-select\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['ad_select'] = $matches[1];
+						}
+						elseif (preg_match("/bond-all-slaves-active\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['all_members_active'] = $matches[1];
+						}
+						elseif (preg_match("/bond-arp-interval\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['arp_interval'] = $matches[1];
+						}
+						elseif (preg_match("/bond-arp-ip-target\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['arp_ip_targets'] = $matches[1];
+						}
+						elseif (preg_match("/bond-arp-validate\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['arp_validate'] = $matches[1];
+						}
+						elseif (preg_match("/bond-arp-all-targets\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['arp_all_targets'] = $matches[1];
+						}
+						elseif (preg_match("/bond-updelay\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['up_delay'] = $matches[1];
+						}
+						elseif (preg_match("/bond-downdelay\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['down_delay'] = $matches[1];
+						}
+						elseif (preg_match("/fail-over-mac-policy\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['fail_over_mac_policy'] = $matches[1];
+						}
+						elseif (preg_match("/bond-num-grat-arp\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['gratuitous_arp'] = $matches[1];
+						}
+						elseif (preg_match("/bond-packets-per-slave\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['packets_per_member'] = $matches[1];
+						}
+						elseif (preg_match("/bond-primary-reselect\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['primary_reselect_policy'] = $matches[1];
+						}
+						elseif (preg_match("/bond-resend-igmp\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['resend_igmp'] = $matches[1];
+						}
+						elseif (preg_match("/bond-lp-interval\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['learn_packet_interval'] = $matches[1];
+						}
+						elseif (preg_match("/bond-primary\s(.*)/i", $line, $matches)) {
+							$interface['bond_parameter']['primary'] = $matches[1];
+						}
 					}
 				}
 				fclose($file);
@@ -320,7 +486,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 
 	public function get_systemd_networkd_config ($interface) {
 		$i = 0;
-		exec("/usr/bin/grep -l $interface[name] /etc/systemd/network/*.network", $output, $rc);
+		exec("/usr/bin/grep -l Name=$interface[name] /etc/systemd/network/*.network", $output, $rc);
 		if ($rc == 0) {
 			$interface['unconfigured'] = false;
 			$file = fopen("$output[0]", "r") or die("Unable to open file!");
@@ -368,6 +534,113 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 				}
 			}
 			fclose($file);
+			if ($interface['bonding_status'] == "master") {
+				exec("/usr/bin/grep -l Bond=$interface[name] /etc/systemd/network/*.network", $output_bond_member, $rc_bond_member);
+				if ($rc_bond_member == 0) {
+					foreach($output_bond_member AS $member_file) {
+						$output_member_name = "";
+						$rc_bond_parameter = 0;
+						//get interface name of the bond slaves
+						exec("/usr/bin/grep Name $member_file | awk -F'=' {'print $2'}", $output_member_name, $rc_member_name);
+						if ($rc_member_name == 0) {
+							$temp_member[] = $output_member_name[0];
+						}
+						//networkd configures the Primary interface not in the parameter-file (see below), but in the .network file of the interface
+						exec("/usr/bin/grep PrimarySlave $member_file", $output_bond_primary, $rc_bond_primary);
+						if ($rc_bond_primary == 0) {
+							$bond_primary = explode('=', $output_bond_primary[0]);
+							if ($bond_primary[1] == "true") {
+								exec("/usr/bin/grep Name $member_file | awk -F'=' {'print $2'}", $output_primary_name, $rc_primary_name);
+								if($rc_primary_name == 0) {
+									$interface['bond_parameter']['primary'] = $output_primary_name[0];
+								}
+							}
+						}
+					}
+					$interface['bond_member'] = $temp_member;
+				}
+				//Get Bond parameter
+				exec("/usr/bin/grep -l Name=$interface[name] /etc/systemd/network/*.netdev", $output_bond_parameter, $rc_bond_parameter);
+				if($rc_bond_parameter == 0) {
+					$parameter_file = fopen("$output_bond_parameter[0]", "r") or die("Unable to open file!");
+					while(!feof($parameter_file)) {
+						$parameter_line = trim(fgets($parameter_file), " \t\x00\v");
+						if (preg_match("/Mode=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['mode'] = $matches[1];
+						}
+						else if (preg_match("/LACPTransmitRate=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['lacp_rate'] = $matches[1];
+						}
+						elseif (preg_match("/MIIMonitorSec=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['mii_monitor_interval'] = $matches[1];
+							//this parameter is configured in seconds by networkd and a 's' is added to the value, so we have to remove the 's' and we need to convert the value to milliseconds
+							rtrim($interface['bond_parameter']['mii_monitor_interval'], 's');
+							$interface['bond_parameter']['mii_monitor_interval'] = (int)$interface['bond_parameter']['mii_monitor_interval'] *1000;
+						}
+						elseif (preg_match("/MinLinks=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['min_links'] = $matches[1];
+						}
+						elseif (preg_match("/TransmitHashPolicy=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['transmit_hash_policy'] = $matches[1];
+						}
+						elseif (preg_match("/AdSelect=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['ad_select'] = $matches[1];
+						}
+						elseif (preg_match("/AllSlavesActive=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['all_members_active'] = $matches[1];
+						}
+						elseif (preg_match("/ARPIntervalSec=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['arp_interval'] = $matches[1];
+							//this parameter is configured in seconds by networkd and a 's' is added to the value, so we have to remove the 's' and we need to convert the value to milliseconds
+							rtrim($interface['bond_parameter']['arp_interval'], 's');
+							$interface['bond_parameter']['arp_interval'] = (int)$interface['bond_parameter']['arp_interval'] *1000;
+						}
+						elseif (preg_match("/ARPIPTargets=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['arp_ip_targets'] = str_replace(' ', ',', $matches[1]);
+						}
+						elseif (preg_match("/ARPValidate=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['arp_validate'] = $matches[1];
+						}
+						elseif (preg_match("/ARPAllTargets=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['arp_all_targets'] = $matches[1];
+						}
+						elseif (preg_match("/UpDelaySec=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['up_delay'] = $matches[1];
+							//this parameter is configured in seconds by networkd and a 's' is added to the value, so we have to remove the 's' and we need to convert the value to milliseconds
+							rtrim($interface['bond_parameter']['up_delay'], 's');
+							$interface['bond_parameter']['up_delay'] = (int)$interface['bond_parameter']['up_delay'] *1000;
+						}
+						elseif (preg_match("/DownDelaySec=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['down_delay'] = $matches[1];
+							//this parameter is configured in seconds by networkd and a 's' is added to the value, so we have to remove the 's' and we need to convert the value to milliseconds
+							rtrim($interface['bond_parameter']['down_delay'], 's');
+							$interface['bond_parameter']['down_delay'] = (int)$interface['bond_parameter']['down_delay'] *1000;
+						}
+						elseif (preg_match("/FailOverMACPolicy=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['fail_over_mac_policy'] = $matches[1];
+						}
+						elseif (preg_match("/GratuitousARP=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['gratuitous_arp'] = $matches[1];
+						}
+						elseif (preg_match("/PacketsPerSlave=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['packets_per_member'] = $matches[1];
+						}
+						elseif (preg_match("/PrimaryReselectPolicy=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['primary_reselect_policy'] = $matches[1];
+						}
+						elseif (preg_match("/ResendIGMP=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['resend_igmp'] = $matches[1];
+						}
+						elseif (preg_match("/LearnPacketIntervalSec=(.*)/i", $parameter_line, $matches)) {
+							$interface['bond_parameter']['learn_packet_interval'] = $matches[1];
+							//this parameter is configured in seconds by networkd and a 's' is added to the value, so we have to remove the 's' and we need to convert the value to milliseconds
+							rtrim($interface['bond_parameter']['learn_packet_interval'], 's');
+							$interface['bond_parameter']['learn_packet_interval'] = (int)$interface['bond_parameter']['learn_packet_interval'] *1000;
+						}
+					}
+					fclose($parameter_file);
+				}
+			}
 		}
 		exec("/usr/sbin/ip -4 address show dev $interface[name] | grep inet | grep dynamic", $output_dyn_4, $rc_ipv4);
 		if ($rc_ipv4 == 0) {
@@ -391,12 +664,17 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function get_nm_config ($interface) {
-		$interface['ipv6_accept_ra'] = trim(file_get_contents("/proc/sys/net/ipv6/conf/$interface[name]/accept_ra"));
-		exec("/usr/bin/nmcli -t device show $interface[name]", $output, $rc);
+        if (is_dir("/proc/sys/net/ipv6/conf/$interface[name]")) {
+            $interface['ipv6_accept_ra'] = trim(file_get_contents("/proc/sys/net/ipv6/conf/$interface[name]/accept_ra"));
+        }
+		exec("/usr/bin/nmcli -t -f all device show $interface[name]", $output, $rc);
 		if ($rc == 0) {
 			$interface['unconfigured'] = false;
 			foreach($output AS $line) {
-				if(preg_match("/GENERAL.CONNECTION:(.*)/i", $line, $matches)) {
+				if (preg_match("/BOND.SLAVES:(.*)/i", $line, $matches)) {
+					$interface['bond_member'] = explode(' ', $matches[1]);
+				}
+				if (preg_match("/GENERAL.CONNECTION:(.*)/i", $line, $matches)) {
 					$interface['nm_connection'] = $matches[1];
 					exec("/usr/bin/nmcli -t connection show $matches[1]", $connection, $rc_connection);
 					if ($rc_connection == 0) {
@@ -444,7 +722,7 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 								foreach($ipv6_address AS $entry) {
 									$entry = explode("/", $entry);
 									if (filter_var($entry[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-										$interface['ipv6_address'][$i] = "$entry[0]/$entry[1]; $entry[1]";
+										$interface['ipv6_address'][$i] = "$entry[0]/$entry[1]";
 										$i++;
 									}
 								}
@@ -461,10 +739,121 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 									$interface['ipv6_gateway'] = $temp[1];
 								}
 							}
+							else if (preg_match("/bond.options:(.*)/i", $con, $bond_options)) {
+								$temp_options = explode(":", $bond_options[0]);
+								foreach($temp_options AS $b_option) {
+									$options = explode(',', $b_option);
+									foreach($options AS $option) {
+										if (preg_match("/mode=(.*)/i", $option, $matches_option)) {
+											if ($matches_option[1] == "balance-rr" || $matches_option[1] == "0") {
+												$interface['bond_parameter']['mode'] = 'balance-rr';
+											}
+											else if ($matches_option[1] == "active-backup" || $matches_option[1] == "1") {
+												$interface['bond_parameter']['mode'] = 'active-backup';
+											}
+											else if ($matches_option[1] == "balance-xor" || $matches_option[1] == "2") {
+												$interface['bond_parameter']['mode'] = 'balance-xor';
+											}
+											else if ($matches_option[1] == "broadcast" || $matches_option[1] == "3") {
+												$interface['bond_parameter']['mode'] = 'broadcast';
+											}
+											else if ($matches_option[1] == "802.3ad" || $matches_option[1] == "4") {
+												$interface['bond_parameter']['mode'] = '802.3ad';
+											}
+											else if ($matches_option[1] == "balance-tlb" || $matches_option[1] == "5") {
+												$interface['bond_parameter']['mode'] = 'balance-tlb';
+											}
+											else if ($matches_option[1] == "balance-alb" || $matches_option[1] == "6") {
+												$interface['bond_parameter']['mode'] = 'balance-alb';
+											}
+										}
+										else if (preg_match("/lacp_rate=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['lacp_rate'] = $matches_option[1];
+										}
+										elseif (preg_match("/miimon=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['mii_monitor_interval'] = $matches_option[1];
+										}
+										elseif (preg_match("/min_links=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['min_links'] = $matches_option[1];
+										}
+										elseif (preg_match("/xmit_hash_policy=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['transmit_hash_policy'] = $matches_option[1];
+										}
+										elseif (preg_match("/ad_select=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['ad_select'] = $matches_option[1];
+										}
+										elseif (preg_match("/all_slaves_active=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['all_members_active'] = $matches_option[1];
+										}
+										elseif (preg_match("/arp_interval=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['arp_interval'] = $matches_option[1];
+										}
+										elseif (preg_match("/arp_ip_target=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['arp_ip_targets'] = $matches_option[1];
+										}
+										elseif (preg_match("/arp_validate=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['arp_validate'] = $matches_option[1];
+										}
+										elseif (preg_match("/arp_all_targets=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['arp_all_targets'] = $matches_option[1];
+										}
+										elseif (preg_match("/updelay=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['up_delay'] = $matches_option[1];
+										}
+										elseif (preg_match("/downdelay=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['down_delay'] = $matches_option[1];
+										}
+										elseif (preg_match("/fail_over_mac=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['fail_over_mac_policy'] = $matches_option[1];
+										}
+										elseif (preg_match("/num_grat_arp=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['gratuitous_arp'] = $matches_option[1];
+										}
+										elseif (preg_match("/packets_per_slave=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['packets_per_member'] = $matches_option[1];
+										}
+										elseif (preg_match("/primary_reselect=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['primary_reselect_policy'] = $matches_option[1];
+										}
+										elseif (preg_match("/resend_igmp=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['resend_igmp'] = $matches_option[1];
+										}
+										elseif (preg_match("/lp_interval=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['learn_packet_interval'] = $matches_option[1];
+										}
+										elseif (preg_match("/primary=(.*)/i", $option, $matches_option)) {
+											$interface['bond_parameter']['primary'] = $matches_option[1];
+										}
+									}
+								}
+							}
 						}
 					}
 				}
 			}
+			if ($interface['bonding_status'] == "master" && $interface['bond_member'][0] == "") {
+                $name = array();
+                //This interface is a bond but we were unable to fetch the slaves. So we need to loop through each connection to find the bond-member and update the bonding-status of the meber (this happens in balance-alb)
+                exec("/usr/bin/nmcli -t connection show", $output_loop_connections, $rc_loop_connections);
+                if ($rc_loop_connections == 0) {
+                    foreach($output_loop_connections AS $loop) {
+                        $output_lcon = "";
+                        $output_lname = "";
+                        $rc_lcon = -1;
+                        $rc_lname = -1;
+                        $lcon = explode(':', $loop);
+                        exec("/usr/bin/nmcli -t connection show $lcon[0] | /usr/bin/grep connection.master:$interface[name]", $output_lcon, $rc_lcon);
+                        if ($rc_lcon == 0) {
+                            exec("/usr/bin/nmcli -t connection show $lcon[0] | /usr/bin/grep connection.interface-name", $output_lname, $rc_lname);
+                            if($rc_lname == 0) {
+                                $temp_name = explode(':', $output_lname[0]);
+                                $name[] = $temp_name[1];
+                            }
+                        }
+                    }
+                }
+                $interface['bond_member'] = $name;
+            }
 		}
 		exec("/usr/sbin/ip -4 address show dev $interface[name] | grep inet | grep dynamic", $output_dyn_4, $rc_ipv4);
 		if ($rc_ipv4 == 0) {
@@ -569,68 +958,68 @@ class Systemadmin extends \FreePBX_Helpers implements \BMO {
 					}
 				}
 				else if (preg_match("/interfaces:\s(.*)/i", $line, $matches)) {
-					$interface['bond_member'][] = explode(', ', $matches[1]);
+					$interface['bond_member'] = explode(', ', $matches[1]);
 				}
 				else if (preg_match("/parameters:\s(.*)/i", $line, $matches)) {
-					$parameters = explode(', ', $matches[1]);
+					$parameters = explode('; ', $matches[1]);
 					foreach($parameters AS $parameter) {
 						$param = explode(':', $parameter);
 						if ($param[0] == 'mode') {
 							$interface['bond_parameter']['mode'] = $param[1];
 						}
 						elseif ($param[0] == 'lacp-rate') {
-							$interface['bond_parameter']['lacp-rate'] = $param[1];
+							$interface['bond_parameter']['lacp_rate'] = $param[1];
 						}
 						elseif ($param[0] == 'mii-monitor-interval') {
-							$interface['bond_parameter']['mii-monitor-interval'] = $param[1];
+							$interface['bond_parameter']['mii_monitor_interval'] = $param[1];
 						}
 						elseif ($param[0] == 'min-links') {
-							$interface['bond_parameter']['min-links'] = $param[1];
+							$interface['bond_parameter']['min_links'] = $param[1];
 						}
 						elseif ($param[0] == 'transmit-hash-policy') {
-							$interface['bond_parameter']['transmit-hash-policy'] = $param[1];
+							$interface['bond_parameter']['transmit_hash_policy'] = $param[1];
 						}
 						elseif ($param[0] == 'ad-select') {
-							$interface['bond_parameter']['ad-select'] = $param[1];
+							$interface['bond_parameter']['ad_select'] = $param[1];
 						}
 						elseif ($param[0] == 'all-members-active') {
-							$interface['bond_parameter']['all-members-active'] = $param[1];
+							$interface['bond_parameter']['all_members_active'] = $param[1];
 						}
 						elseif ($param[0] == 'arp-interval') {
-							$interface['bond_parameter']['arp-interval'] = $param[1];
+							$interface['bond_parameter']['arp_interval'] = $param[1];
 						}
 						elseif ($param[0] == 'arp-ip-targets') {
-							$interface['bond_parameter']['arp-ip-targets'] = $param[1];
+							$interface['bond_parameter']['arp_ip_targets'] = str_replace(' -', '', $param[1]);
 						}
 						elseif ($param[0] == 'arp-validate') {
-							$interface['bond_parameter']['arp-validate'] = $param[1];
+							$interface['bond_parameter']['arp_validate'] = $param[1];
 						}
 						elseif ($param[0] == 'arp-all-targets') {
-							$interface['bond_parameter']['arp-all-targets'] = $param[1];
+							$interface['bond_parameter']['arp_all_targets'] = $param[1];
 						}
 						elseif ($param[0] == 'up-delay') {
-							$interface['bond_parameter']['up-delay'] = $param[1];
+							$interface['bond_parameter']['up_delay'] = $param[1];
 						}
 						elseif ($param[0] == 'down-delay') {
-							$interface['bond_parameter']['down-delay'] = $param[1];
+							$interface['bond_parameter']['down_delay'] = $param[1];
 						}
 						elseif ($param[0] == 'fail-over-mac-policy') {
-							$interface['bond_parameter']['fail-over-mac-policy'] = $param[1];
+							$interface['bond_parameter']['fail_over_mac_policy'] = $param[1];
 						}
 						elseif ($param[0] == 'gratuitous-arp') {
-							$interface['bond_parameter']['gratuitous-arp'] = $param[1];
+							$interface['bond_parameter']['gratuitous_arp'] = $param[1];
 						}
 						elseif ($param[0] == 'packets-per-member') {
-							$interface['bond_parameter']['packets-per-member'] = $param[1];
+							$interface['bond_parameter']['packets_per_member'] = $param[1];
 						}
 						elseif ($param[0] == 'primary-reselect-policy') {
-							$interface['bond_parameter']['primary-reselect-policy'] = $param[1];
+							$interface['bond_parameter']['primary_reselect_policy'] = $param[1];
 						}
 						elseif ($param[0] == 'resend-igmp') {
-							$interface['bond_parameter']['resend-igmp'] = $param[1];
+							$interface['bond_parameter']['resend_igmp'] = $param[1];
 						}
 						elseif ($param[0] == 'learn-packet-interval') {
-							$interface['bond_parameter']['learn-packet-interval'] = $param[1];
+							$interface['bond_parameter']['learn_packet_interval'] = $param[1];
 						}
 						elseif ($param[0] == 'primary') {
 							$interface['bond_parameter']['primary'] = $param[1];

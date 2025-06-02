@@ -56,7 +56,7 @@ if(isset($_POST['set_dns']) && $_POST['set_dns'] == "true") {
         foreach($output AS $line) {
           $err_msg .= "$line\n";
         }
-        throw new \Exception("Can't update naetwork config: $err_msg");
+        throw new \Exception("Can't update dns config: $err_msg");
       }
   }
 }
